@@ -58,6 +58,10 @@ cupertino_icons
 2.12
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/cupertino_icons-1.0.2/
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/cupertino_icons-1.0.2/lib/
+dio
+2.4
+file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/dio-3.0.10/
+file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/dio-3.0.10/lib/
 fake_async
 2.12
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/fake_async-1.2.0-nullsafety.3/
@@ -70,6 +74,10 @@ glob
 2.1
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/glob-1.2.0/
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/glob-1.2.0/lib/
+http_parser
+2.3
+file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/http_parser-3.1.4/
+file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/http_parser-3.1.4/lib/
 io
 2.0
 file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/io-0.3.4/

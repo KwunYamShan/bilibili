@@ -92,6 +92,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dio",
+      "rootUri": "file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/dio-3.0.10",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/fake_async-1.2.0-nullsafety.3",
       "packageUri": "lib/",
@@ -132,6 +138,12 @@
       "rootUri": "file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/glob-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.1"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///Users/wuhao/.pub-cache/hosted/pub.flutter-io.cn/http_parser-3.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
     },
     {
       "name": "integration_test",
@@ -344,7 +356,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-03-25T01:48:15.473416Z",
+  "generated": "2021-03-25T04:57:55.538518Z",
   "generator": "pub",
   "generatorVersion": "2.12.0-133.7.beta"
 }

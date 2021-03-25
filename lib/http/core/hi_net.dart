@@ -1,3 +1,4 @@
+import 'package:flutter_bilibili/http/core/dio_adapter.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
 import 'package:flutter_bilibili/http/core/hi_net_adapter.dart';
 import 'package:flutter_bilibili/http/core/mock_adpter.dart';
@@ -52,8 +53,8 @@ class HiNet {
 
   Future<dynamic> send<T>(BaseRequest request) async {
     printLog("url:${request.url()}");
-   //使用Mock发送请求
-    HiNetAdapter adapter = MockAdapter();
+    //使用Mock发送请求
+    HiNetAdapter adapter = DioAdapter();
     return adapter.send(request);
   }
 
