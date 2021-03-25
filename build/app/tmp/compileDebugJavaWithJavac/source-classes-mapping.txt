@@ -1,4 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-com/wuhao/flutter_bilibili/BuildConfig.java
- com.wuhao.flutter_bilibili.BuildConfig
