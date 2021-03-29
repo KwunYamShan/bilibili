@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/db/hi_cache.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
 import 'package:flutter_bilibili/http/core/hi_net.dart';
+import 'package:flutter_bilibili/http/model/test_mo2.dart';
 import 'package:flutter_bilibili/http/request/test_request.dart';
-
+import 'package:flutter_bilibili/http/model/Owner.dart';
 void main() {
   runApp(MyApp());
 }
@@ -65,8 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
 
+    textOwner();
+
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HiCache.preInit();
+  }
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -117,5 +127,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void textOwner() {
+    var ownerMap = Owner.ownerMap;
+    Owner owner = Owner.fromJson(ownerMap);
+    print("name:${owner.name}");
+    print("face:${owner.face}");
+    print("fans:${owner.fans}");
+
+    //第二种方式
+    TestMo2.fromJson(ownerMap);
+
+    HiCache.getInstance().setInt("aaa", 123);
+    print(HiCache.getInstance().get("aaa"));
   }
 }

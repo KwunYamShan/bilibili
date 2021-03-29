@@ -21,7 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  dio: ^3.0.10
+  dio: ^3.0.10 #网络请求
+  json_annotation: ^3.1.0 #1. json 解析 注解器
+  shared_preferences: ^0.5.12+4 #本地存储
+
   flutter:
     sdk: flutter
 
@@ -31,6 +34,10 @@ dependencies:
   cupertino_icons: ^1.0.1
 
 dev_dependencies:
+  json_serializable: ^3.5.0 #2.json 解析
+  build_runner: ^1.0.0 #3.json 解析
+
+
   flutter_test:
     sdk: flutter
   integration_test:
