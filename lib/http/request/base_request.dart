@@ -1,3 +1,5 @@
+import 'package:flutter_bilibili/http/api/login_api.dart';
+
 enum HttpMethod { GET, POST, DELETE }
 
 //基础请求
@@ -25,6 +27,10 @@ abstract class BaseRequest {
       }
     }
 
+    if(needLogin()){
+      //给需要登陆的接口携带登陆令牌
+      addHeader(LoginApi.BOARDING_PASS, LoginApi.getBoardingPass());
+    }
     //http与https的切换
     if (useHttps) {
       uri = Uri.https(authority(), pathStr, params);
@@ -45,7 +51,11 @@ abstract class BaseRequest {
     return this;
   }
 
-  Map<String, dynamic> header = Map();
+  Map<String, dynamic> header = {
+    'course-flag': 'fa',
+    'auth-token': 'MjAyMC0wNi0yMyAwMzoyNTowMQ==fa',//不定期更新//https://coding.imooc.com/learn/questiondetail/225589.html
+  };
+
   //添加header
   BaseRequest addHeader(String k, Object v) {
     header[k] = v;

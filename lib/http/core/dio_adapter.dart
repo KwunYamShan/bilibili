@@ -3,11 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bilibili/http/request/base_request.dart';
 
 import '../request/base_request.dart';
-import '../request/base_request.dart';
-import '../request/base_request.dart';
 import 'hi_error.dart';
-import 'hi_net_adapter.dart';
-import 'hi_net_adapter.dart';
 import 'hi_net_adapter.dart';
 
 class DioAdapter extends HiNetAdapter{

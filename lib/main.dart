@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/db/hi_cache.dart';
+import 'package:flutter_bilibili/http/api/login_api.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
 import 'package:flutter_bilibili/http/core/hi_net.dart';
 import 'package:flutter_bilibili/http/model/test_mo2.dart';
+import 'package:flutter_bilibili/http/request/notice_request.dart';
 import 'package:flutter_bilibili/http/request/test_request.dart';
 import 'package:flutter_bilibili/http/model/Owner.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -59,15 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       var fire = await HiNet.getInstance().fire(request);
       print(fire);
-    } on NeedAuth catch(e){
+    } on NeedAuth catch (e) {
       print(e);
-    } on NeedLogin catch(e){
+    } on NeedLogin catch (e) {
       print(e);
-    } on HiNetError catch(e){
+    } on HiNetError catch (e) {
       print(e);
     }
 
-    textOwner();
+    //textOwner();
+    textLogin();
 
   }
 
@@ -77,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     HiCache.preInit();
   }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -141,5 +146,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
     HiCache.getInstance().setInt("aaa", 123);
     print(HiCache.getInstance().get("aaa"));
+  }
+
+  void textLogin() async {
+    try {
+      // var registration = await LoginApi.registration(
+      //     'jvadd', 'dddd112002', '7240673', '2251');
+      var registration = await LoginApi.login('jvadd', 'dddd112002');
+      print("textLogin:" + registration.toString());
+      textNotice();
+    } on NeedLogin catch (e) {
+      print("textLogin:" + e.toString());
+    } on NeedAuth catch (e) {
+      print("textLogin:" + e.toString());
+    }
+  }
+
+  void textNotice() async {
+    try{
+      var notice = await HiNet.getInstance().fire(NoticeRequest());
+      print("notice:" + notice.toString());
+    } on NeedAuth catch(e){
+      print(e);
+    }on NeedLogin catch(e){
+      print(e);
+    }on HiNetError catch(e){
+      print(e);
+    }
   }
 }
