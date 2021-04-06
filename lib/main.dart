@@ -7,6 +7,7 @@ import 'package:flutter_bilibili/http/model/test_mo2.dart';
 import 'package:flutter_bilibili/http/request/notice_request.dart';
 import 'package:flutter_bilibili/http/request/test_request.dart';
 import 'package:flutter_bilibili/http/model/Owner.dart';
+import 'package:flutter_bilibili/page/login_page.dart';
 import 'package:flutter_bilibili/page/registration_page.dart';
 import 'package:flutter_bilibili/util/color_util.dart';
 
@@ -16,8 +17,10 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    HiCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -32,8 +35,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: white,
       ),
-      home: RegistrationPage(),
-    );
+      home: LoginPage( ));
   }
 }
 
@@ -81,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HiCache.preInit();
+
   }
 
   @override

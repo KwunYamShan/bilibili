@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/http/api/login_api.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
+import 'package:flutter_bilibili/page/login_button.dart';
 import 'package:flutter_bilibili/util/string_util.dart';
+import 'package:flutter_bilibili/util/toast_util.dart';
 import 'package:flutter_bilibili/widget/appbar.dart';
 import 'package:flutter_bilibili/widget/login_effect.dart';
 import 'package:flutter_bilibili/widget/login_input.dart';
@@ -101,7 +103,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
             Padding(
               padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: _loginButton(),
+              child: LoginButton(title:'注册',enable: loginEnable,onPressed: checkParams,),
             )
           ],
         ),
@@ -165,6 +167,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
     if(tips !=null){
       print(tips);
+      showWarnToast(tips);
       return;
     }
     send();
