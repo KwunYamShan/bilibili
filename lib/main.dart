@@ -58,7 +58,17 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    //实现路由跳转逻辑
+    HiNavigator.getInstance().registerRouteJump(
+        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map args}) {
+          _routeStatus = routeStatus;
+          if(_routeStatus == RouteStatus.detail){
+            this.videoModel = args['videoMo'];
+          }
+          notifyListeners();
+        }));
+  }
 
   RouteStatus _routeStatus = RouteStatus.home;
 
@@ -82,10 +92,6 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       //跳转首页时将栈中其他页面进行出栈， 因为主页不可回退
       pages.clear();
       page = pageWrap(HomePage(
-        onJumpToDetail: (videoModel) {
-          this.videoModel = videoModel;
-          notifyListeners(); //通知数据变化 和setstatus效果一样
-        },
       ));
     } else if (routeStatus == RouteStatus.detail) {
       if (videoModel != null)
@@ -94,52 +100,48 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
         ));
     } else if (routeStatus == RouteStatus.registration) {
       page = pageWrap(RegistrationPage(
-        onJumpToLogin: () {
-          _routeStatus = RouteStatus.login;
-          notifyListeners();
-        },
       ));
     } else if (routeStatus == RouteStatus.login) {
       page = pageWrap(LoginPage(
-        onJumpToRegistration: () {
-          _routeStatus = RouteStatus.registration;
-          notifyListeners();
-        },
-        onSuccess: () {
-          _routeStatus = RouteStatus.home;
-          notifyListeners();
-        },
       ));
     }
 
     //创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];
+
+    //通知路由发生变化
+    HiNavigator.getInstance().notify(tempPages, pages);
     pages = tempPages;
 
     return WillPopScope(
       //fix android 物理返回键，无法返回上一页的问题 https://github.com/flutter/flutter/issues/66349
       onWillPop: () async => !await navigatorKey.currentState.maybePop(),
       child: Navigator(
-      key: navigatorKey,
-      pages: pages,
-      onPopPage: (route, result) {
-        if(route.settings is MaterialPage){
-          //登陆页未登陆返回拦截
-          if((route.settings as MaterialPage).child is LoginPage){
-            if(!hasLogin){
-              print('请先登陆');
-              return false;
+        key: navigatorKey,
+        pages: pages,
+        onPopPage: (route, result) {
+          if (route.settings is MaterialPage) {
+            //登陆页未登陆返回拦截
+            if ((route.settings as MaterialPage).child is LoginPage) {
+              if (!hasLogin) {
+                print('请先登陆');
+                return false;
+              }
             }
           }
-        }
-        //执行返回操作
-        if(!route.didPop(result)){
-          return false;
-        }
-        pages.removeLast();//页面出栈
-        return true;
-      },
-    ),);
+          //执行返回操作
+          if (!route.didPop(result)) {
+            return false;
+          }
+
+          var tempePages = [...pages];
+          pages.removeLast(); //页面出栈
+          //通知路由发生变化
+          HiNavigator.getInstance().notify(pages, tempePages);
+          return true;
+        },
+      ),
+    );
   }
 
   RouteStatus get routeStatus {
