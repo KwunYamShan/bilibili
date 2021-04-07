@@ -9,9 +9,10 @@ import 'package:flutter_bilibili/widget/login_effect.dart';
 import 'package:flutter_bilibili/widget/login_input.dart';
 
 class LoginPage extends StatefulWidget {
-  final VoidCallback onJumpToLogin;
+  final VoidCallback onJumpToRegistration;
+  final VoidCallback onSuccess;
 
-  const LoginPage({Key key, this.onJumpToLogin}) : super(key: key);
+  const LoginPage({Key key, this.onJumpToRegistration,this.onSuccess }) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -30,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: appBar(
         "立即登陆",
         "注册",
-        widget.onJumpToLogin,
+        widget.onJumpToRegistration,
       ),
       body: Container(
         child: ListView(
@@ -82,8 +83,8 @@ class _LoginPageState extends State<LoginPage> {
       print(result);
       if(result['code'] == 0 ){
         print('登陆成功');
-        if(widget.onJumpToLogin !=null){
-          widget.onJumpToLogin();
+        if(widget.onSuccess !=null){
+          widget.onSuccess();
         }
        setState(() {
          showToast('登陆成功');
