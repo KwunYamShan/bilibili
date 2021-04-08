@@ -25,6 +25,7 @@ dependencies:
   json_annotation: ^3.1.0 #1. json 解析 注解器
   shared_preferences: ^0.5.12+4 #本地存储
   fluttertoast: ^7.1.8 #吐司
+  underline_indicator: ^0.0.2 #圆角页面指示器
   flutter:
     sdk: flutter
 

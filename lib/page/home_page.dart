@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
+import 'package:flutter_bilibili/page/home_tab_page.dart';
+import 'package:flutter_bilibili/util/color_util.dart';
+import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -10,10 +13,12 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin{
+class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin,TickerProviderStateMixin{
   RouteChangeListener listener ;
+  var tabs = ["推荐",'热门',"追播",'影视',"搞笑",'日常',"综合",'手机游戏','短片-手书-配音'];
   @override
   void initState() {
+    _controller = TabController(length: tabs.length, vsync: this);
     HiNavigator.getInstance().addListener( this.listener = (current,pre){
       print("current:${current.page}  ,pre:${pre.page}");
       if(widget == current.page   || current.page is HomePage){
@@ -36,11 +41,17 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
       body: Container(
         child: Column(
           children: [
-            Text('首页'),
-            MaterialButton(
-              onPressed: () => HiNavigator.getInstance().onJumpTo(RouteStatus.detail,args: {'videoMo':VideoModel(1111)}),
-            child: Text('详情'),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.only(top:30),
+              child: _tabbar(),
             ),
+          Flexible(child: TabBarView(
+            controller: _controller,
+            children: tabs.map((tab){
+              return HomeTabPage(title:tab);
+            }).toList(),
+          ))
           ],
         ),
       ),
@@ -51,4 +62,26 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  TabController _controller;
+  _tabbar() {
+    return TabBar(
+      controller: _controller,
+        isScrollable: true,//控制tabbar是否可以横向滚动
+        labelColor: Colors.black,
+        indicator: UnderlineIndicator(
+          strokeCap: StrokeCap.round,//圆角
+          borderSide: BorderSide(color: primary,width: 3),
+          insets: EdgeInsets.only(left: 15,right: 15),//内边距
+
+        ),
+        tabs: tabs.map<Tab>((tab){
+          return Tab(
+            child: Padding(
+              padding: EdgeInsets.only(left: 5,right: 5),
+              child: Text(tab,style: TextStyle(fontSize:16),),
+            ),
+          );
+        }).toList());
+  }
 }
