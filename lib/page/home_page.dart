@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin{
   RouteChangeListener listener ;
   @override
   void initState() {
@@ -46,4 +46,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  //页面切换不会重新创建
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

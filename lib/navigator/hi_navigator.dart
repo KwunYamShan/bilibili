@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/navigator/bottom_navigator.dart';
 import 'package:flutter_bilibili/page/home_page.dart';
 import 'package:flutter_bilibili/page/login_page.dart';
 import 'package:flutter_bilibili/page/registration_page.dart';
@@ -32,7 +33,7 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.login;
   } else if (page.child is RegistrationPage) {
     return RouteStatus.registration;
-  } else if (page.child is HomePage) {
+  } else if (page.child is BottomNavigator) {
     return RouteStatus.home;
   } else if (page.child is VideoDetailPage) {
     return RouteStatus.detail;
@@ -61,6 +62,8 @@ class HiNavigator extends _RouteJumpListener {
   RouteJumpListener _routeJump;
 
   RouteStatusInfo _current;
+  //首页底部tab
+  RouteStatusInfo _bottomTab;
 
   static HiNavigator getInstance() {
     if (_instance == null) {
@@ -86,6 +89,12 @@ class HiNavigator extends _RouteJumpListener {
     }
   }
 
+  //监听首页底部 tab切换
+  void onBottomTabChange(int index, Widget page){
+    _bottomTab = RouteStatusInfo(RouteStatus.home, page);
+    _notify(_bottomTab);
+
+  }
   //移除监听
   void removeListener(RouteChangeListener listener) {
     _listeners.remove(listener);
@@ -98,11 +107,14 @@ class HiNavigator extends _RouteJumpListener {
   }
 
   void _notify(RouteStatusInfo current) {
+    if(current.page is BottomNavigator && _bottomTab!=null){
+      //如果打开的是首页，则明确到首页具体的tab
+      current = _bottomTab;
+    }
     print("hi _notify: current：${current.page}");
     print("hi _notify:pre: ${_current?.page}");
     _listeners.forEach((element) {
       element(current,_current);
-
     });
     _current = current;
   }
