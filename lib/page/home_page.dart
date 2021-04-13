@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/core/hi_state.dart';
 import 'package:flutter_bilibili/http/api/home_api.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
 import 'package:flutter_bilibili/model/home_mo.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin,TickerProviderStateMixin{
+class _HomePageState extends HiState<HomePage>  with AutomaticKeepAliveClientMixin,TickerProviderStateMixin{
   RouteChangeListener listener ;
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
