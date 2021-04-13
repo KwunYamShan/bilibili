@@ -46,14 +46,14 @@ abstract class BaseRequest {
   Map<String, String> params = Map();
 
   //添加参数
-  BaseRequest add(String k, String v) {
+  BaseRequest add(String k, dynamic v) {
     params[k] = v;
     return this;
   }
 
   Map<String, dynamic> header = {
     'course-flag': 'fa',
-    'auth-token': 'MjAyMC0wNi0yMyAwMzoyNTowMQ==fa',//不定期更新//https://coding.imooc.com/learn/questiondetail/225589.html
+    'auth-token': 'ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa',//不定期更新//https://coding.imooc.com/learn/questiondetail/225589.html
   };
 
   //添加header
