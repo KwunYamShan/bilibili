@@ -52,7 +52,6 @@ class _HomePageState extends HiState<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       body: Container(
         child: Column(
           children: [
@@ -64,7 +63,7 @@ class _HomePageState extends HiState<HomePage>
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.only(top: 5),
+              padding: EdgeInsets.only(top: 30),
               child: _tabbar(),
             ),
             Flexible(
@@ -72,7 +71,7 @@ class _HomePageState extends HiState<HomePage>
               controller: _controller,
               children: categoryList.map((tab) {
                 return HomeTabPage(
-                  title: tab.name,
+                  categoryName: tab.name,
                   bannerList: tab.name == '推荐' ? bannerList : null,
                 );
               }).toList(),
