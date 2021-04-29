@@ -24,21 +24,35 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
   List<VideoModel> videoList = [];
   int pageIndex = 1;
 
+  bool _loading = false;
+  ScrollController _scrollController = ScrollController();//监听列表的滚动 上拉加载更多
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _initData();
+     _initData();
+
+    _scrollController.addListener(() {
+      var dis = _scrollController.position.maxScrollExtent - _scrollController.position.pixels;//可滚动的最大距离- 当前已滚动距离
+
+      print('dis:$dis');
+
+      if(dis<100 && !_loading){//底部距离不足100时加载更多
+        print('_loading:$_loading');
+        _initData(loadMore: true);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return MediaQuery.removePadding(
+    return RefreshIndicator(child:  MediaQuery.removePadding(
         context: context,
         removeTop: true,
         //crossAxisCount 列
         child: StaggeredGridView.countBuilder(
+          controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),// 解决条目不能充满整个屏幕就无法下拉刷新的问题
             crossAxisCount: 2,
             itemCount: videoList.length,
             padding: EdgeInsets.all(10),
@@ -57,7 +71,9 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
               } else {
                 return StaggeredTile.fit(1);
               }
-            }));
+            })), onRefresh: _initData)
+      
+     ;
   }
 
   _banner() {
@@ -65,7 +81,8 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
 
   }
 
-  void _initData({loadMore = false}) async {
+  Future<void> _initData({loadMore = false}) async {
+    _loading = true;
     if (!loadMore) {
       pageIndex = 1;
     }
@@ -73,8 +90,9 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
     try {
       HomeMo result = await HomeApi.get(widget.categoryName,
           pageIndex: currentIndex, pageSize: 10);
-      print('loadData:${result}');
+      print('loadDataqqq:${result}');
       setState(() {
+        _loading = false;
         if (loadMore) {
           if (result.videoList.isNotEmpty) {
             videoList = [...videoList, ...result.videoList];
@@ -84,10 +102,16 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
           videoList = result.videoList;
         }
       });
+
+      // Future.delayed(Duration(milliseconds: 1000),(){//延时1秒
+      //   _loading = false;
+      // });
     } on NeedAuth catch (e) {
+      _loading = false;
       print(e);
       showWarnToast(e.message);
     } on HiNetError catch (e) {
+      _loading = false;
       print(e);
       showWarnToast(e.message);
     }
