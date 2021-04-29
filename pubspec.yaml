@@ -32,6 +32,7 @@ dependencies:
   transparent_image: ^1.0.0 #图片渐变出现
   cached_network_image: ^2.5.1 # 图片缓存
   lottie: ^0.7.0+1 #动画扩展库  # 根目录下创建assets目录 在pubspec.yaml引入
+  url_launcher: ^5.7.10 #打开第三方app的插件
   flutter:
     sdk: flutter
 

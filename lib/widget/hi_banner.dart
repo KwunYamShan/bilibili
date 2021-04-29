@@ -3,6 +3,7 @@ import 'package:flutter_bilibili/model/home_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HiBanner extends StatelessWidget {
   final List<BannerMo> bannerList;
@@ -60,10 +61,13 @@ class HiBanner extends StatelessWidget {
   void _handleClick(BannerMo mo) {
     if(mo.type == 'video'){
       HiNavigator.getInstance().onJumpTo(RouteStatus.detail,args: {'videoMo':VideoModel(vid: mo.url)});
-
     }else{
+      _launchURL(mo.url);
     }
+
     print("_handleClick:${mo.type} , ${mo.url}");
 
   }
+  void _launchURL(String _url) async =>
+      await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
 }

@@ -119,6 +119,7 @@ class _HomePageState extends HiState<HomePage>
   void loadData() async {
     _isloading = true;
     try {
+
       HomeMo result = await HomeApi.get('推荐');
       print('loadData:${result}');
       if (result.categoryList != null) {
@@ -126,11 +127,16 @@ class _HomePageState extends HiState<HomePage>
         _controller =
             TabController(length: result.categoryList.length, vsync: this);
       }
-      setState(() {
-        _isloading = false;
+
+      //TODO 删除延时
+        Future.delayed(Duration(milliseconds: 1000),(){
+          setState(() {
+          _isloading = false;
+          });
+        });
         categoryList = result.categoryList;
         bannerList = result.bannerList;
-      });
+
     } on NeedAuth catch (e) {
       setState(() {
         _isloading = false;
