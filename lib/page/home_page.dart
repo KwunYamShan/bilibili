@@ -8,6 +8,7 @@ import 'package:flutter_bilibili/navigator/hi_navigator.dart';
 import 'package:flutter_bilibili/page/home_tab_page.dart';
 import 'package:flutter_bilibili/util/color_util.dart';
 import 'package:flutter_bilibili/util/toast_util.dart';
+import 'package:flutter_bilibili/widget/loading_container.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
@@ -26,6 +27,7 @@ class _HomePageState extends HiState<HomePage>
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
 
+  bool _isloading = true;//因为第一次肯定是要加载数据的
   @override
   void initState() {
     _controller = TabController(length: categoryList.length, vsync: this);
@@ -52,7 +54,8 @@ class _HomePageState extends HiState<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body:
+      LoadingContainer(isLoading: _isloading,child: Container(
         child: Column(
           children: [
             NavigationBar(
@@ -67,17 +70,17 @@ class _HomePageState extends HiState<HomePage>
             ),
             Flexible(
                 child: TabBarView(
-              controller: _controller,
-              children: categoryList.map((tab) {
-                return HomeTabPage(
-                  categoryName: tab.name,
-                  bannerList: tab.name == '推荐' ? bannerList : null,
-                );
-              }).toList(),
-            ))
+                  controller: _controller,
+                  children: categoryList.map((tab) {
+                    return HomeTabPage(
+                      categoryName: tab.name,
+                      bannerList: tab.name == '推荐' ? bannerList : null,
+                    );
+                  }).toList(),
+                ))
           ],
         ),
-      ),
+      ),)
     );
   }
 
@@ -114,6 +117,7 @@ class _HomePageState extends HiState<HomePage>
 
   //异步请求数据
   void loadData() async {
+    _isloading = true;
     try {
       HomeMo result = await HomeApi.get('推荐');
       print('loadData:${result}');
@@ -123,13 +127,20 @@ class _HomePageState extends HiState<HomePage>
             TabController(length: result.categoryList.length, vsync: this);
       }
       setState(() {
+        _isloading = false;
         categoryList = result.categoryList;
         bannerList = result.bannerList;
       });
     } on NeedAuth catch (e) {
+      setState(() {
+        _isloading = false;
+      });
       print(e);
       showWarnToast(e.message);
     } on HiNetError catch (e) {
+      setState(() {
+        _isloading = false;
+      });
       print(e);
       showWarnToast(e.message);
     }
