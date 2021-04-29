@@ -1,0 +1,21 @@
+
+///数字加万
+String countFormat(int count){
+  String value = "";
+  if(count>9999){
+    value = "${(count / 10000) .toStringAsFixed(2)}万";
+  }else{
+    value = count.toString();
+  }
+  return value;
+}
+
+///时间转换将秒转换为分钟：秒
+String durationTransform(int seconds){
+  int m = (seconds/60).truncate();
+  int s = seconds - m * 60;
+  if(s<10){
+    return '$m:0$s';
+  }
+  return '$m:$s';
+}
