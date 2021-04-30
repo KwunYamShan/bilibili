@@ -2,6 +2,8 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import 'hi_video_controls.dart';
+
 ///播放器组件
 class VideoView extends StatefulWidget {
   final String url;
@@ -35,6 +37,7 @@ class _VideoViewState extends State<VideoView> {
       aspectRatio: widget.aspectRatio, //比例
       autoPlay: widget.autoPlay, //自动播放
       looping: widget.looping, //循环播放
+      customControls: HiVideoControls()
     );
   }
 
