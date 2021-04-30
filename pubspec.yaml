@@ -33,6 +33,8 @@ dependencies:
   cached_network_image: ^2.5.1 # 图片缓存
   lottie: ^0.7.0+1 #动画扩展库  # 根目录下创建assets目录 在pubspec.yaml引入
   url_launcher: ^5.7.10 #打开第三方app的插件
+  chewie: ^0.12.2 #基于video_player封装的视频播放器
+  video_player: ^1.0.1 # 视频播放器
   flutter:
     sdk: flutter
 
