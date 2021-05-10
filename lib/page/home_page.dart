@@ -11,12 +11,14 @@ import 'package:flutter_bilibili/page/video_detail_page.dart';
 import 'package:flutter_bilibili/util/color_util.dart';
 import 'package:flutter_bilibili/util/toast_util.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
+import 'package:flutter_bilibili/widget/hi_tab.dart';
 import 'package:flutter_bilibili/widget/loading_container.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int> onJumpTo;
+
   const HomePage({Key key, this.onJumpTo}) : super(key: key);
 
   @override
@@ -25,15 +27,19 @@ class HomePage extends StatefulWidget {
 
 //WidgetsBindingObserver生命周期监听 addObserver  didChangeAppLifecycleState
 class _HomePageState extends HiState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin, WidgetsBindingObserver{
+    with
+        AutomaticKeepAliveClientMixin,
+        TickerProviderStateMixin,
+        WidgetsBindingObserver {
   RouteChangeListener listener;
 
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
 
-  bool _isloading = true;//因为第一次肯定是要加载数据的
+  bool _isloading = true; //因为第一次肯定是要加载数据的
 
   Widget _currentPage;
+
   @override
   void initState() {
     super.initState();
@@ -47,9 +53,9 @@ class _HomePageState extends HiState<HomePage>
         print("首页onPause");
       }
       //当页面返回到首页恢复首页的状态栏样式    视频详情页并且不是个人中心页面
-      if(pre?.page is VideoDetailPage && !(current.page is ProfilePage)){
+      if (pre?.page is VideoDetailPage && !(current.page is ProfilePage)) {
         var statusStyle = StatusStyle.DARK_CONTENT;
-        changeStatusBar(color: Colors.white,statusStyle: statusStyle);
+        changeStatusBar(color: Colors.white, statusStyle: statusStyle);
       }
     });
     loadData();
@@ -67,53 +73,53 @@ class _HomePageState extends HiState<HomePage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    switch(state){
-      case AppLifecycleState.inactive://处于这种状态的应用程序应该假设它们可能在任何时候暂停
+    switch (state) {
+      case AppLifecycleState.inactive: //处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;
-      case AppLifecycleState.resumed://从后台切换前台，界面可见
+      case AppLifecycleState.resumed: //从后台切换前台，界面可见
       //fix 后台重新变前台 状态栏字体颜色变白的问题
-      if(!(_currentPage is VideoDetailPage)){
-        changeStatusBar(color: Colors.white,statusStyle: StatusStyle.DARK_CONTENT);
-      }
+        if (!(_currentPage is VideoDetailPage)) {
+          changeStatusBar(
+              color: Colors.white, statusStyle: StatusStyle.DARK_CONTENT);
+        }
         break;
-      case AppLifecycleState.paused://进入后台，界面不可见
+      case AppLifecycleState.paused: //进入后台，界面不可见
         break;
-      case AppLifecycleState.detached://app结束时调用
+      case AppLifecycleState.detached: //app结束时调用
         break;
-
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-      LoadingContainer(isLoading: _isloading,child: Container(
-        child: Column(
-          children: [
-            NavigationBar(
-              height: 50,
-              color: Colors.white,
-              child: appBar(),
-              statusStyle: StatusStyle.DARK_CONTENT,
-            ),
-            Container(
-              color: Colors.white,
-              child: _tabbar(),
-            ),
-            Flexible(
-                child: TabBarView(
-                  controller: _controller,
-                  children: categoryList.map((tab) {
-                    return HomeTabPage(
-                      categoryName: tab.name,
-                      bannerList: tab.name == '推荐' ? bannerList : null,
-                    );
-                  }).toList(),
-                ))
-          ],
-        ),
-      ),)
+        body:
+        LoadingContainer(isLoading: _isloading, child: Container(
+          child: Column(
+            children: [
+              NavigationBar(
+                height: 50,
+                color: Colors.white,
+                child: appBar(),
+                statusStyle: StatusStyle.DARK_CONTENT,
+              ),
+              Container(
+                color: Colors.white,
+                child: _tabbar(),
+              ),
+              Flexible(
+                  child: TabBarView(
+                    controller: _controller,
+                    children: categoryList.map((tab) {
+                      return HomeTabPage(
+                        categoryName: tab.name,
+                        bannerList: tab.name == '推荐' ? bannerList : null,
+                      );
+                    }).toList(),
+                  ))
+            ],
+          ),
+        ),)
     );
   }
 
@@ -125,34 +131,23 @@ class _HomePageState extends HiState<HomePage>
   TabController _controller;
 
   _tabbar() {
-    return TabBar(
-        controller: _controller,
-        isScrollable: true,
-        //控制tabbar是否可以横向滚动
-        labelColor: Colors.black,
-        indicator: UnderlineIndicator(
-          strokeCap: StrokeCap.round, //圆角
-          borderSide: BorderSide(color: primary, width: 3),
-          insets: EdgeInsets.only(left: 15, right: 15), //内边距
-        ),
-        tabs: categoryList.map<Tab>((tab) {
-          return Tab(
-            child: Padding(
-              padding: EdgeInsets.only(left: 5, right: 5),
-              child: Text(
-                tab.name,
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          );
-        }).toList());
+    return HiTab(categoryList.map<Tab>((tab) {
+      return Tab(
+          text: tab.name);
+    }).toList(),
+      controller: _controller,
+      fontSize: 16,
+      borderWidth: 3,
+      unselectedLabelColor: Colors.black54,
+      insets: 13,
+    );
+
   }
 
   //异步请求数据
   void loadData() async {
     _isloading = true;
     try {
-
       HomeMo result = await HomeApi.get('推荐');
       print('loadData:${result}');
       if (result.categoryList != null) {
@@ -162,14 +157,13 @@ class _HomePageState extends HiState<HomePage>
       }
 
       //TODO 删除延时
-        Future.delayed(Duration(milliseconds: 1000),(){
-          setState(() {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        setState(() {
           _isloading = false;
-          });
         });
-        categoryList = result.categoryList;
-        bannerList = result.bannerList;
-
+      });
+      categoryList = result.categoryList;
+      bannerList = result.bannerList;
     } on NeedAuth catch (e) {
       setState(() {
         _isloading = false;
@@ -192,7 +186,7 @@ class _HomePageState extends HiState<HomePage>
         children: [
           InkWell(
             onTap: () {
-              if(widget.onJumpTo !=null){
+              if (widget.onJumpTo != null) {
                 widget.onJumpTo(3);
               }
             },
@@ -207,29 +201,29 @@ class _HomePageState extends HiState<HomePage>
           ),
           Expanded(
               child: Padding(
-            //填充剩余空间
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                padding: EdgeInsets.only(left: 10),
-                height: 32,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.search,
-                  color: Colors.grey,
+                //填充剩余空间
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10),
+                    height: 32,
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    decoration: BoxDecoration(color: Colors.grey[100]),
+                  ),
                 ),
-                decoration: BoxDecoration(color: Colors.grey[100]),
-              ),
-            ),
-          )),
+              )),
           Icon(
             Icons.explore_outlined,
             color: Colors.grey,
           ),
           Padding(
             padding: EdgeInsets.only(left: 12),
-            child: Icon(Icons.mail_outline,color: Colors.grey,),
+            child: Icon(Icons.mail_outline, color: Colors.grey,),
           )
         ],
       ),
