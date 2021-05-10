@@ -6,8 +6,11 @@ import 'package:flutter_bilibili/model/home_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
 import 'package:flutter_bilibili/page/home_tab_page.dart';
+import 'package:flutter_bilibili/page/profile_page.dart';
+import 'package:flutter_bilibili/page/video_detail_page.dart';
 import 'package:flutter_bilibili/util/color_util.dart';
 import 'package:flutter_bilibili/util/toast_util.dart';
+import 'package:flutter_bilibili/util/view_util.dart';
 import 'package:flutter_bilibili/widget/loading_container.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
@@ -20,16 +23,21 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+//WidgetsBindingObserver生命周期监听 addObserver  didChangeAppLifecycleState
 class _HomePageState extends HiState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin, WidgetsBindingObserver{
   RouteChangeListener listener;
 
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
 
   bool _isloading = true;//因为第一次肯定是要加载数据的
+
+  Widget _currentPage;
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller = TabController(length: categoryList.length, vsync: this);
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
       print("current:${current.page}  ,pre:${pre.page}");
@@ -38,9 +46,12 @@ class _HomePageState extends HiState<HomePage>
       } else if (widget == pre?.page || pre?.page is HomePage) {
         print("首页onPause");
       }
+      //当页面返回到首页恢复首页的状态栏样式    视频详情页并且不是个人中心页面
+      if(pre?.page is VideoDetailPage && !(current.page is ProfilePage)){
+        var statusStyle = StatusStyle.DARK_CONTENT;
+        changeStatusBar(color: Colors.white,statusStyle: statusStyle);
+      }
     });
-    super.initState();
-
     loadData();
   }
 
@@ -48,9 +59,31 @@ class _HomePageState extends HiState<HomePage>
   void dispose() {
     HiNavigator.getInstance().removeListener((current, pre) => listener);
     _controller.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
+  //监听应用生命周期变化
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state){
+      case AppLifecycleState.inactive://处于这种状态的应用程序应该假设它们可能在任何时候暂停
+        break;
+      case AppLifecycleState.resumed://从后台切换前台，界面可见
+      //fix 后台重新变前台 状态栏字体颜色变白的问题
+      if(!(_currentPage is VideoDetailPage)){
+        changeStatusBar(color: Colors.white,statusStyle: StatusStyle.DARK_CONTENT);
+      }
+        break;
+      case AppLifecycleState.paused://进入后台，界面不可见
+        break;
+      case AppLifecycleState.detached://app结束时调用
+        break;
+
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
