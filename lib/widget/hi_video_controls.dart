@@ -1,4 +1,3 @@
-
 ///自定义播放器控制器
 ///
 ///Defines customised controls. Check [MaterialControls] or
@@ -15,7 +14,29 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class HiVideoControls extends StatefulWidget {
-  const HiVideoControls({Key key}) : super(key: key);
+  const HiVideoControls(
+      {Key key,
+      this.showLoadingOnInitialize = true,
+      this.showBigPlayIcon = true,
+      this.overlayUI,
+      this.bottomGradient,
+      this.barrageUI})
+      : super(key: key);
+
+  //初始化时是否展示loading
+  final bool showLoadingOnInitialize;
+
+  //是否展示大播放按钮
+  final bool showBigPlayIcon;
+
+  //视频浮层
+  final Widget overlayUI;
+
+  //底部渐变
+  final Gradient bottomGradient;
+
+  //弹幕浮层
+  final Widget barrageUI;
 
   @override
   State<StatefulWidget> createState() {
@@ -66,20 +87,26 @@ class _HiVideoControlsState extends State<HiVideoControls>
         onTap: () => _cancelAndRestartTimer(),
         child: AbsorbPointer(
           absorbing: _hideStuff,
-          child: Column(
-            children: <Widget>[
-              if (_latestValue != null &&
-                  !_latestValue.isPlaying &&
-                  _latestValue.duration == null ||
-                  _latestValue.isBuffering)
-                const Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              else
-                _buildHitArea(),
-              _buildBottomBar(context),
+          child: Stack(
+            children: [
+              widget.barrageUI ?? Container(),
+              Column(
+                children: <Widget>[
+                  if (_latestValue != null &&
+                      !_latestValue.isPlaying &&
+                      _latestValue.duration == null ||
+                      _latestValue.isBuffering)
+                    Expanded(
+                      child: Center(
+                        child: _loadingIndicator(),
+                      ),
+                    )
+                  else
+                    _buildHitArea(),
+                  _buildBottomBar(context),
+                ],
+              ),
+              _overlayUI()
             ],
           ),
         ),
@@ -120,6 +147,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
     super.didChangeDependencies();
   }
 
+  ///底部控制栏
   AnimatedOpacity _buildBottomBar(
       BuildContext context,
       ) {
@@ -130,18 +158,20 @@ class _HiVideoControlsState extends State<HiVideoControls>
       duration: const Duration(milliseconds: 300),
       child: Container(
         height: barHeight,
-        color: Theme.of(context).dialogBackgroundColor,
+        decoration: BoxDecoration(
+          //渐变
+            gradient: widget.bottomGradient),
         child: Row(
           children: <Widget>[
             _buildPlayPause(controller),
             if (chewieController.isLive)
-              const Expanded(child: Text('LIVE'))
-            else
-              _buildPosition(iconColor),
-            if (chewieController.isLive)
               const SizedBox()
             else
               _buildProgressBar(),
+            if (chewieController.isLive)
+              const Expanded(child: Text('LIVE'))
+            else
+              _buildPosition(iconColor),
             if (chewieController.allowPlaybackSpeedChanging)
               _buildSpeedButton(controller),
             if (chewieController.allowMuting) _buildMuteButton(controller),
@@ -152,6 +182,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
     );
   }
 
+  ///展开按钮
   GestureDetector _buildExpandButton() {
     return GestureDetector(
       onTap: _onExpandCollapse,
@@ -160,7 +191,6 @@ class _HiVideoControlsState extends State<HiVideoControls>
         duration: const Duration(milliseconds: 300),
         child: Container(
           height: barHeight,
-          margin: const EdgeInsets.only(right: 12.0),
           padding: const EdgeInsets.only(
             left: 8.0,
             right: 8.0,
@@ -168,8 +198,9 @@ class _HiVideoControlsState extends State<HiVideoControls>
           child: Center(
             child: Icon(
               chewieController.isFullScreen
-                  ? Icons.fullscreen_exit
-                  : Icons.fullscreen,
+                  ? Icons.fullscreen_exit_rounded
+                  : Icons.fullscreen_rounded,
+              color: Colors.white,
             ),
           ),
         ),
@@ -192,7 +223,8 @@ class _HiVideoControlsState extends State<HiVideoControls>
               _cancelAndRestartTimer();
             }
           } else {
-            _playPause();
+            //防止点击空白区域有暂停变成了播放
+            // _playPause();
 
             setState(() {
               _hideStuff = true;
@@ -207,8 +239,11 @@ class _HiVideoControlsState extends State<HiVideoControls>
               _latestValue != null && !_latestValue.isPlaying && !_dragging
                   ? 1.0
                   : 0.0,
+
+              ///中间播放按钮
               duration: const Duration(milliseconds: 300),
-              child: GestureDetector(
+              child: widget.showBigPlayIcon
+                  ? GestureDetector(
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).dialogBackgroundColor,
@@ -221,7 +256,8 @@ class _HiVideoControlsState extends State<HiVideoControls>
                             ? const Icon(Icons.replay, size: 32.0)
                             : AnimatedIcon(
                           icon: AnimatedIcons.play_pause,
-                          progress: playPauseIconAnimationController,
+                          progress:
+                          playPauseIconAnimationController,
                           size: 32.0,
                         ),
                         onPressed: () {
@@ -229,7 +265,8 @@ class _HiVideoControlsState extends State<HiVideoControls>
                         }),
                   ),
                 ),
-              ),
+              )
+                  : Container(),
             ),
           ),
         ),
@@ -314,24 +351,28 @@ class _HiVideoControlsState extends State<HiVideoControls>
     );
   }
 
+  ///暂停和播放icon
   GestureDetector _buildPlayPause(VideoPlayerController controller) {
     return GestureDetector(
       onTap: _playPause,
       child: Container(
         height: barHeight,
         color: Colors.transparent,
-        margin: const EdgeInsets.only(left: 8.0, right: 4.0),
         padding: const EdgeInsets.only(
-          left: 12.0,
-          right: 12.0,
+          left: 10.0,
+          right: 10.0,
         ),
         child: Icon(
-          controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          controller.value.isPlaying
+              ? Icons.pause_rounded
+              : Icons.play_arrow_rounded,
+          color: Colors.white,
         ),
       ),
     );
   }
 
+  ///播放时间
   Widget _buildPosition(Color iconColor) {
     final position = _latestValue != null && _latestValue.position != null
         ? _latestValue.position
@@ -341,12 +382,10 @@ class _HiVideoControlsState extends State<HiVideoControls>
         : Duration.zero;
 
     return Padding(
-      padding: const EdgeInsets.only(right: 24.0),
+      padding: EdgeInsets.only(right: 5.0),
       child: Text(
-        '${formatDuration(position)} / ${formatDuration(duration)}',
-        style: const TextStyle(
-          fontSize: 14.0,
-        ),
+        '${formatDuration(position)}/${formatDuration(duration)}',
+        style: TextStyle(fontSize: 10, color: Colors.white),
       ),
     );
   }
@@ -381,6 +420,10 @@ class _HiVideoControlsState extends State<HiVideoControls>
   }
 
   void _onExpandCollapse() {
+    if (chewieController.videoPlayerController.value.size == null) {
+      print('_onExpandCollapse:videoPlayerController.value.size is null.');
+      return;
+    }
     setState(() {
       _hideStuff = true;
 
@@ -440,11 +483,11 @@ class _HiVideoControlsState extends State<HiVideoControls>
       _latestValue = controller.value;
     });
   }
-
+  ///进度条
   Widget _buildProgressBar() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(right: 20.0),
+        padding: EdgeInsets.only(right: 15,left: 15),
         child: MaterialVideoProgressBar(
           controller,
           onDragStart: () {
@@ -470,6 +513,22 @@ class _HiVideoControlsState extends State<HiVideoControls>
         ),
       ),
     );
+  }
+
+  ///中间进度条
+  _loadingIndicator() {
+    //初始化时是否显示loading
+    return widget.showLoadingOnInitialize ? CircularProgressIndicator() : null;
+  }
+
+  ///浮层
+  _overlayUI() {
+    return widget.overlayUI != null
+        ? AnimatedOpacity(
+        opacity: _hideStuff ? 0.0 : 1.0,
+        duration: Duration(milliseconds: 300),
+        child: widget.overlayUI)
+        : Container();
   }
 }
 
