@@ -420,7 +420,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
   }
 
   void _onExpandCollapse() {
-    if (chewieController.videoPlayerController.value.size == null) {
+    if (chewieController.videoPlayerController.value.size == null) {//未播放过就获取不到屏幕宽高， 这里做一个非空判断
       print('_onExpandCollapse:videoPlayerController.value.size is null.');
       return;
     }

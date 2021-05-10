@@ -1,6 +1,7 @@
 //自定义appbar
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/util/view_util.dart';
 
 appBar(String title, String rightTitle, VoidCallback rightButtonClick){
   return AppBar(
@@ -22,4 +23,26 @@ appBar(String title, String rightTitle, VoidCallback rightButtonClick){
     ],
   );
 
+}
+//视频详情页appbar， BackButton有对返回事件的处理 这里就不需要再声明回调了
+videoAppbar(){
+  return Container(
+    padding: EdgeInsets.only(right: 8),
+    decoration: BoxDecoration(gradient: blackLinearGradient(fromTop: true)),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,//左右顶格
+      children: [
+        BackButton(
+          color: Colors.white,
+        ),
+        Row(
+          children: [
+            Icon(Icons.live_tv_rounded,color: Colors.white,size: 20,),
+            Padding(padding: EdgeInsets.only(left: 12)),
+            Icon(Icons.more_vert_rounded,color: Colors.white,size: 20,),
+          ],
+        )
+      ],
+    ),
+  );
 }
