@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/model/Owner.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
 import 'package:flutter_bilibili/widget/appbar.dart';
 import 'package:flutter_bilibili/widget/hi_tab.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
+import 'package:flutter_bilibili/widget/video_header.dart';
 import 'package:flutter_bilibili/widget/video_view.dart';
 
 class VideoDetailPage extends StatefulWidget {
@@ -55,6 +57,16 @@ class _VideoDetailPageState extends State<VideoDetailPage>
               ),
               _buildVideoView(),
               _buildTabNavigation(),
+              Flexible(
+                  child: TabBarView(
+                controller: _controller,
+                children: [
+                  _buildDetailList(),
+                  Container(
+                    child: Text("敬请期待"),
+                  )
+                ],
+              )), //填充剩余空间
             ],
           ),
         ),
@@ -99,6 +111,28 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   }
 
   _tabBar() {
-    return HiTab(tabs.map<Tab>((name) => Tab(text: name)).toList(),controller: _controller,);
+    return HiTab(
+      tabs.map<Tab>((name) => Tab(text: name)).toList(),
+      controller: _controller,
+    );
+  }
+
+  _buildDetailList() {
+    return ListView(
+      padding: EdgeInsets.all(0),
+      children: [
+        ...buildContents(),
+      ],
+    );
+  }
+
+  buildContents() {
+    return [
+      Container(
+        child: VideoHeader(
+          owner: widget.videoModel.owner,
+        ),
+      )
+    ];
   }
 }
