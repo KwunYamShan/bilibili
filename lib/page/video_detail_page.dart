@@ -15,6 +15,7 @@ import 'package:flutter_bilibili/widget/expandable_content.dart';
 import 'package:flutter_bilibili/widget/hi_tab.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:flutter_bilibili/widget/video_header.dart';
+import 'package:flutter_bilibili/widget/video_large_card.dart';
 import 'package:flutter_bilibili/widget/video_toolbar.dart';
 import 'package:flutter_bilibili/widget/video_view.dart';
 
@@ -33,6 +34,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   List tabs = ["简介", "评论288"];
   VideoDetailMo videoDetailMo;
   VideoModel videoModel; //更新数据
+  List<VideoModel> videoList = [];
 
   @override
   void initState() {
@@ -134,13 +136,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       padding: EdgeInsets.all(0),
       children: [
         ...buildContents(),
-        Container(
-          height: 500,
-          margin: EdgeInsets.only(top: 10),
-          alignment: Alignment.topLeft,
-          decoration: BoxDecoration(color: Colors.lightBlueAccent),
-          child: Text("展开列表"),
-        )
+        ...buildVideoList(),
       ],
     );
   }
@@ -166,6 +162,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       setState(() {
         videoDetailMo = result;
         videoModel = result.videoModel;//更新model
+        videoList = result.videoList;
       });
     } on NeedAuth catch (e) {
       print(e);
@@ -222,5 +219,9 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     }on HiNetError catch(e){
       print(e);
     }
+  }
+
+  buildVideoList() {
+    return videoList.map((mo) => VideoLargeCard(videoModel: mo)).toList();
   }
 }
