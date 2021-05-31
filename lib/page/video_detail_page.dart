@@ -1,10 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/http/api/video_detail_api.dart';
+import 'package:flutter_bilibili/http/core/hi_error.dart';
 import 'package:flutter_bilibili/model/Owner.dart';
+import 'package:flutter_bilibili/model/v_ideo_detail_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
+import 'package:flutter_bilibili/util/toast_util.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
 import 'package:flutter_bilibili/widget/appbar.dart';
+import 'package:flutter_bilibili/widget/expandable_content.dart';
 import 'package:flutter_bilibili/widget/hi_tab.dart';
 import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:flutter_bilibili/widget/video_header.dart';
@@ -23,7 +28,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     with TickerProviderStateMixin {
   TabController _controller;
   List tabs = ["简介", "评论288"];
-
+  VIdeoDetailMo videoDetailMo;
   @override
   void initState() {
     super.initState();
@@ -32,6 +37,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
 
     _controller = TabController(length: tabs.length, vsync: this);
+    _loadDetail();
   }
 
   @override
@@ -122,6 +128,13 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       padding: EdgeInsets.all(0),
       children: [
         ...buildContents(),
+        Container(
+          height: 500,
+          margin: EdgeInsets.only(top: 10),
+          alignment: Alignment.topLeft,
+          decoration: BoxDecoration(color: Colors.lightBlueAccent),
+          child: Text("展开列表"),
+        )
       ],
     );
   }
@@ -132,7 +145,24 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         child: VideoHeader(
           owner: widget.videoModel.owner,
         ),
-      )
+      ),
+      ExpandableContent(mo: widget.videoModel )
     ];
+  }
+
+  void _loadDetail() async{
+    try{
+      VIdeoDetailMo result = await VideoDetailDao.get(widget.videoModel.vid);
+      print(result);
+      setState(() {
+        videoDetailMo = result;
+      });
+    }on NeedAuth catch(e){
+      print(e);
+      showWarnToast(e.message);
+    }on HiNetError catch(e){
+      print(e);
+
+    }
   }
 }
