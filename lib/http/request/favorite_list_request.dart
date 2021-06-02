@@ -1,10 +1,10 @@
 import 'package:flutter_bilibili/http/request/base_request.dart';
 
-//收藏按钮
-class FavoriteRequest extends BaseRequest{
+//收藏列表
+class FavoriteListRequest extends BaseRequest{
   @override
   HttpMethod httpMethod() {
-    return HttpMethod.POST;
+    return HttpMethod.GET;
   }
 
   @override
@@ -14,7 +14,7 @@ class FavoriteRequest extends BaseRequest{
 
   @override
   String path() {
-   return 'uapi/fa/favorite';
+    return 'uapi/fa/favorites';
   }
 
 }

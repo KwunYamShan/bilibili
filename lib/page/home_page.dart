@@ -104,7 +104,8 @@ class _HomePageState extends HiState<HomePage>
                 statusStyle: StatusStyle.DARK_CONTENT,
               ),
               Container(
-                color: Colors.white,
+                //color: Colors.white,       Failed assertion: line 275 pos 15: 'color == null || decoration == null'
+                decoration: bottomBoxShadow(),
                 child: _tabbar(),
               ),
               Flexible(

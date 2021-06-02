@@ -18,6 +18,7 @@ class HiBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: bannerHeight,
+      margin: EdgeInsets.only(bottom: 10),
       child: _banner(),
     );
   }
