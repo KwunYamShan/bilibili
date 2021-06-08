@@ -36,6 +36,7 @@ dependencies:
   chewie: ^0.12.2 #基于video_player封装的视频播放器
   video_player: ^1.0.1 # 视频播放器
   orientation: ^1.2.0 #屏幕方向切换组件
+  clipboard: ^0.1.2+8 #剪贴板
   flutter:
     sdk: flutter
 

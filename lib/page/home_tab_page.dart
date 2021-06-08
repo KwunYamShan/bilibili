@@ -31,7 +31,7 @@ class _HomeTabPageState
   }
 
   _banner() {
-    return HiBanner(widget.bannerList);
+    return HiBanner(widget.bannerList,padding: EdgeInsets.only(left: 5,right: 5),);
   }
 
   @override

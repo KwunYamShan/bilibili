@@ -5,7 +5,7 @@ import 'package:flutter_bilibili/http/api/favorite_api.dart';
 import 'package:flutter_bilibili/http/api/like_api.dart';
 import 'package:flutter_bilibili/http/api/video_detail_api.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
-import 'package:flutter_bilibili/model/Owner.dart';
+import 'package:flutter_bilibili/model/owner.dart';
 import 'package:flutter_bilibili/model/video_detail_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/util/toast_util.dart';

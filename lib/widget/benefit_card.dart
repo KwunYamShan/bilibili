@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/model/profile_mo.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
+import 'package:flutter_bilibili/widget/hi_blur.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CourseCard extends StatelessWidget {
-  final List<Course> courseList;
+class BenefitCard extends StatelessWidget {
+  final List<Benefit> benefitList;
 
-  const CourseCard({Key key, @required this.courseList}) : super(key: key);
+  const BenefitCard({Key key, @required this.benefitList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class CourseCard extends StatelessWidget {
       child: Column(
         children: [
           _buildTitle(),
-          ..._buildCardList(context),
+          _buildBenefit(context),
         ],
       ),
     );
@@ -28,12 +32,12 @@ class CourseCard extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            "职场进阶",
+            "增值服务",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           hiSpace(width: 10),
           Text(
-            "带你突破进阶瓶颈",
+            "购买后登录慕课网再次点击打开查看",
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey[600],
@@ -44,41 +48,73 @@ class CourseCard extends StatelessWidget {
     );
   }
 
-  //动态布局
-  _buildCardList(BuildContext context) {
-    var courseGroup = Map();
-    //将课程分组
-    courseList.forEach((mo) {
-      if (!courseGroup.containsKey(mo.group)) {
-        courseGroup[mo.group] = [];
-      }
-      List list = courseGroup[mo.group];
-      list.add(mo);
-    });
-    return courseGroup.entries.map((e) {
-      List list = e.value;
-      var width =
-          (MediaQuery.of(context).size.width - 20 - (list.length - 1) * 5) /
-              list.length;
-      var height = width / 16 * 6;
-      return Row(
-        children: [...list.map((mo) => _buildCard(mo, width, height)).toList()],
-      );
-    });
-  }
-
-  _buildCard(mo, double width, double height) {
+  _buildCard(BuildContext context, Benefit mo, double width) {
     return InkWell(
       onTap: () {
         //HiNavigator.getInstance().openH5(mo.url);
-      },
+        if(mo.name=="交流群"){
+          FlutterClipboard.copy(mo.url).then(( value ) =>
+              Fluttertoast.showToast(
+                  msg: mo.url+"群号复制成功",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  textColor: Colors.white));
+          }else{
+          _launchInBrowser(mo.url);
+        }
+        },
       child: Padding(
-        padding: EdgeInsets.only(right: 5,bottom: 7),
+        padding: EdgeInsets.only(right: 5, bottom: 7),
         child: ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: cachedImage(mo.cover, width: width, height: height),
-    ),
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            width: width,
+            height: 60,
+            decoration: BoxDecoration(color: Colors.deepOrangeAccent),
+            child: Stack(
+              children: [
+                Positioned(child: HiBlur()),
+                Positioned(
+                    child: Center(
+                  child: Text(
+                    mo.name,
+                    style: TextStyle(color: Colors.white54),
+                    textAlign: TextAlign.center,
+                  ),
+                ))
+              ],
+            ),
+          ),
+        ),
       ),
+    );
+  }
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  //
+  _buildBenefit(BuildContext context) {
+    //计算卡片宽度
+    var width = (MediaQuery.of(context).size.width -
+            20 -
+            (benefitList.length - 1) * 5) /
+        benefitList.length;
+
+    return Row(
+      children: [
+        ...benefitList.map((mo) => _buildCard(context, mo, width)).toList()
+      ],
     );
   }
 }

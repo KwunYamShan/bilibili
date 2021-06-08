@@ -1,6 +1,6 @@
 //详情页，作者widget
 import 'package:flutter/material.dart';
-import 'package:flutter_bilibili/model/Owner.dart';
+import 'package:flutter_bilibili/model/owner.dart';
 import 'package:flutter_bilibili/util/color_util.dart';
 import 'package:flutter_bilibili/util/format_util.dart';
 

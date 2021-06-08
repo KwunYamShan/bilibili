@@ -1,4 +1,4 @@
-import 'package:flutter_bilibili/model/Owner.dart';
+import 'package:flutter_bilibili/model/owner.dart';
 
 class VideoModel {
   String id;
