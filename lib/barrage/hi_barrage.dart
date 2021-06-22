@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/barrage/barrage_item.dart';
+import 'package:flutter_bilibili/barrage/barrage_view_util.dart';
 import 'package:flutter_bilibili/barrage/hi_socket.dart';
 import 'package:flutter_bilibili/barrage/ibarrage.dart';
 import 'package:flutter_bilibili/model/barrage_mo.dart';
@@ -101,9 +102,18 @@ class HiBarrage extends StatefulWidget {
     }
   }
 
-  void addBarrage(BarrageModel temp) {
-
-
+  void addBarrage(BarrageModel model) {
+    double perRowHeight = 30;//高度30
+    var line = _barrageIndex % widget.lineCount;//获取弹幕是第几行
+    _barrageIndex ++;
+    var top = line * perRowHeight +widget.top;
+    //为每一条弹幕生成一个id
+    String id = '${_random.nextInt(10000)}:${model.content}';
+    var item = BarrageItem(id: id,top: top,child: BarrageViewUtil.barrageView(model),onComplete: _onComplete,);
+    _barrageItemList.add(item);
+    setState(() {
+      //刷新
+    });
   }
 
   @override
@@ -139,5 +149,11 @@ class HiBarrage extends StatefulWidget {
     _handlerMessage([
       BarrageModel(content: message, vid: widget.vid, priority: 1, type: 1)
     ]);
+  }
+
+  void _onComplete(id) {
+    print("HiBarrage :_onComplete:$id");
+    //弹幕播放完毕将其从弹幕widget集合中剔除
+    _barrageItemList.removeWhere((element) => element.id == id);//通过条件移除条目
   }
 }
