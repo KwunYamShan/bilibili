@@ -37,6 +37,7 @@ dependencies:
   video_player: ^1.0.1 # 视频播放器
   orientation: ^1.2.0 #屏幕方向切换组件
   clipboard: ^0.1.2+8 #剪贴板
+  web_socket_channel: ^1.1.0 #websocket用于实现弹幕的插件
   flutter:
     sdk: flutter
 

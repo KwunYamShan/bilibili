@@ -1,4 +1,5 @@
 import 'package:flutter_bilibili/http/api/login_api.dart';
+import 'package:flutter_bilibili/util/hi_constants.dart';
 
 enum HttpMethod { GET, POST, DELETE }
 
@@ -52,8 +53,8 @@ abstract class BaseRequest {
   }
 
   Map<String, Object> header = {
-    'course-flag': 'fa',
-    'auth-token': 'ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa',//不定期更新//https://coding.imooc.com/learn/questiondetail/225589.html
+    HiConstants.authTokenK:HiConstants.authTokenV,
+    HiConstants.courseFlagK:HiConstants.courseFlagV//不定期更新//https://coding.imooc.com/learn/questiondetail/225589.html
   };
 
   //添加header

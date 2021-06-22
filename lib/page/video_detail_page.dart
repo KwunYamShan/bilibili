@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/barrage/hi_socket.dart';
 import 'package:flutter_bilibili/http/api/favorite_api.dart';
 import 'package:flutter_bilibili/http/api/like_api.dart';
 import 'package:flutter_bilibili/http/api/video_detail_api.dart';
@@ -35,7 +36,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoDetailMo videoDetailMo;
   VideoModel videoModel; //更新数据
   List<VideoModel> videoList = [];
-
+  HiSocket _hiSocket;
   @override
   void initState() {
     super.initState();
@@ -45,12 +46,21 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
     _controller = TabController(length: tabs.length, vsync: this);
     videoModel = widget.videoModel;
+    initSocket();
     _loadDetail();
+  }
+
+  void initSocket() {
+    _hiSocket = HiSocket();
+    _hiSocket.open(videoModel.vid).listen((value) {
+        print('VideoDetailPage：initSocket： 收到：$value');
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _hiSocket.close();
     super.dispose();
   }
 
