@@ -17,6 +17,7 @@ class VideoView extends StatefulWidget {
   final bool looping;
   final double aspectRatio;
   final Widget overlayUI;
+  final Widget barrageUI;
 
   const VideoView(this.url,
       {Key key,
@@ -24,7 +25,8 @@ class VideoView extends StatefulWidget {
       this.autoPlay = false,
       this.looping = false,
       this.aspectRatio = 16 / 9,
-      this.overlayUI})
+      this.overlayUI,
+      this.barrageUI})
       : super(key: key);
 
   @override
@@ -71,6 +73,7 @@ class _VideoViewState extends State<VideoView> {
         showBigPlayIcon: false, //是否显示大播放按钮
         bottomGradient: blackLinearGradient(), //设置底部线性渐变
         overlayUI: widget.overlayUI,
+        barrageUI: widget.barrageUI,
       ),
       materialProgressColors: _progressColors, //设置进度条颜色
     );
