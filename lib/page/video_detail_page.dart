@@ -40,8 +40,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   void initState() {
     super.initState();
     //黑色状态栏，仅android
-    changeStatusBar(
-        color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
+    changeStatusBar(color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
 
     _controller = TabController(length: tabs.length, vsync: this);
     videoModel = widget.videoModel;
@@ -52,6 +51,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   void dispose() {
     _controller.dispose();
     super.dispose();
+    changeStatusBar();
   }
 
   @override

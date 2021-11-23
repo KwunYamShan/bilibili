@@ -1,5 +1,4 @@
-import 'package:chewie/chewie.dart'
-    hide MaterialControls; //隐藏该包中的MaterialControls类
+import 'package:chewie/chewie.dart' hide MaterialControls; //隐藏该包中的MaterialControls类
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bilibili/util/color_util.dart';

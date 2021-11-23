@@ -54,8 +54,8 @@ class _HomePageState extends HiState<HomePage>
       }
       //当页面返回到首页恢复首页的状态栏样式    视频详情页并且不是个人中心页面
       if (pre?.page is VideoDetailPage && !(current.page is ProfilePage)) {
-        var statusStyle = StatusStyle.DARK_CONTENT;
-        changeStatusBar(color: Colors.white, statusStyle: statusStyle);
+        // var statusStyle = StatusStyle.DARK_CONTENT;
+        changeStatusBar();
       }
     });
     loadData();
@@ -78,10 +78,7 @@ class _HomePageState extends HiState<HomePage>
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
       //fix 后台重新变前台 状态栏字体颜色变白的问题
-        if (!(_currentPage is VideoDetailPage)) {
-          changeStatusBar(
-              color: Colors.white, statusStyle: StatusStyle.DARK_CONTENT);
-        }
+          changeStatusBar();
         break;
       case AppLifecycleState.paused: //进入后台，界面不可见
         break;
