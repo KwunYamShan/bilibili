@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
-import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
 
 //三方库中有statusbar有该枚举，但是我们还需要自行定义 是为了以后更换第三方时降低耦合
 enum StatusStyle { LIGHT_CONTENT, DARK_CONTENT }
@@ -10,13 +9,13 @@ class NavigationBar extends StatefulWidget {
   final StatusStyle statusStyle;
   final Color color;
   final double height;
-  final Widget child;
+  final Widget? child;
 
   @override
   _NavigationBarState createState() => _NavigationBarState();
 
   const NavigationBar(
-      {Key key,
+      {Key? key,
       this.statusStyle = StatusStyle.DARK_CONTENT,
       this.color = Colors.white,
       this.height = 46,

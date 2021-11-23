@@ -8,7 +8,7 @@ class LoadingContainer extends StatelessWidget {
   final bool cover;
 
   const LoadingContainer(
-      {Key key, this.isLoading, this.cover = false, this.child})
+      {Key? key, this.isLoading = false , this.cover = false,required this.child})
       : super(key: key);
 
   @override

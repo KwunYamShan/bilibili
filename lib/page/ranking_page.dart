@@ -19,7 +19,7 @@ class _RankingPageState extends State<RankingPage>
     {"key": "favorite", "name": "收藏"},
   ];
 
-  TabController _controller;
+  late TabController _controller;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _RankingPageState extends State<RankingPage>
         child: TabBarView(
             controller: _controller,
             children: TABS.map((tab) {
-              return RankingTabPage(sort: tab['key']);
+              return RankingTabPage(sort: tab['key']??"null fuck");
             }).toList()));
   }
 }

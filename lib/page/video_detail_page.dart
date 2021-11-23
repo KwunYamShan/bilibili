@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/barrage/hi_barrage.dart';
-import 'package:flutter_bilibili/barrage/hi_socket.dart';
 import 'package:flutter_bilibili/http/api/favorite_api.dart';
 import 'package:flutter_bilibili/http/api/like_api.dart';
 import 'package:flutter_bilibili/http/api/video_detail_api.dart';
 import 'package:flutter_bilibili/http/core/hi_error.dart';
-import 'package:flutter_bilibili/model/owner.dart';
 import 'package:flutter_bilibili/model/video_detail_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/util/toast_util.dart';
@@ -24,7 +22,7 @@ import 'package:flutter_bilibili/widget/video_view.dart';
 class VideoDetailPage extends StatefulWidget {
   final VideoModel videoModel;
 
-  const VideoDetailPage({Key  key, this.videoModel}) : super(key: key);
+  const VideoDetailPage({Key?  key,required this.videoModel}) : super(key: key);
 
   @override
   _VideoDetailPageState createState() => _VideoDetailPageState();
@@ -32,10 +30,10 @@ class VideoDetailPage extends StatefulWidget {
 
 class _VideoDetailPageState extends State<VideoDetailPage>
     with TickerProviderStateMixin {
-  TabController _controller;
+  late TabController _controller;
   List tabs = ["简介", "评论288"];
-  VideoDetailMo videoDetailMo;
-  VideoModel videoModel; //更新数据
+  VideoDetailMo? videoDetailMo;
+  VideoModel? videoModel; //更新数据
   List<VideoModel> videoList = [];
   var _barrageKey = GlobalKey<HiBarrageState>();
   @override
@@ -62,7 +60,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       body: MediaQuery.removePadding(
         context: context,
         removeTop: Platform.isIOS,
-        child: videoModel.url !=null?Container(
+        child: videoModel?.url !=null?Container(
           child: Column(
             children: [
               //ios下的黑色状态栏
@@ -93,7 +91,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   _buildVideoView() {
     var model = videoModel;
     return VideoView(
-      model.url,
+      model!.url,
       cover: model.cover,
       overlayUI: videoAppbar(),
       barrageUI: HiBarrage(
@@ -151,20 +149,20 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   buildContents() {
     return [
       VideoHeader(
-        owner: videoModel.owner,
+        owner: videoModel!.owner,
       ),
-      ExpandableContent(mo: videoModel),
-      VideoToolbar(detailMo: videoDetailMo,
-        videoModel: videoModel,
-        onLike: _doLike,
-        onUnLike: _onUnLike,
-      onFavorite: _onFavorite,) //传递的是方法的引用，而不是调用方法 所以不需要方法名加()   _doLike()
+      ExpandableContent(mo: videoModel!),
+        VideoToolbar(detailMo: videoDetailMo,
+          videoModel: videoModel!,
+          onLike: _doLike,
+          onUnLike: _onUnLike,
+          onFavorite: _onFavorite,) //传递的是方法的引用，而不是调用方法 所以不需要方法名加()   _doLike()
     ];
   }
 
   void _loadDetail() async {
     try {
-      VideoDetailMo result = await VideoDetailDao.get(videoModel.vid);
+      VideoDetailMo result = await VideoDetailDao.get(videoModel!.vid);
       print(result);
       setState(() {
         videoDetailMo = result;
@@ -181,13 +179,13 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   void _doLike() async{
     try{
-      var result = await LikeApi.like(videoModel.vid, !videoDetailMo.isLike);
+      var result = await LikeApi.like(videoModel!.vid, !videoDetailMo!.isLike);
       print(result);
-      videoDetailMo.isLike = !videoDetailMo.isLike;
-      if(videoDetailMo.isLike){
-        videoModel.like+=1;
+      videoDetailMo!.isLike = !videoDetailMo!.isLike;
+      if(videoDetailMo!.isLike){
+        videoModel!.like+=1;
       }else{
-        videoModel.like -=1;
+        videoModel!.like -=1;
       }
       setState(() {
         videoModel = videoModel;
@@ -207,13 +205,13 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   ///收藏
   void _onFavorite() async {
     try{
-      var result = await FavoriteApi.favorite(videoModel.vid, !videoDetailMo.isFavorite);
+      var result = await FavoriteApi.favorite(videoModel!.vid, !videoDetailMo!.isFavorite);
       print(result);
-      videoDetailMo.isFavorite = !videoDetailMo.isFavorite;
-      if(videoDetailMo.isFavorite){
-        videoModel.favorite +=1;
+      videoDetailMo!.isFavorite = !videoDetailMo!.isFavorite;
+      if(videoDetailMo!.isFavorite){
+        videoModel!.favorite +=1;
       }else{
-        videoModel.favorite -=1;
+        videoModel!.favorite -=1;
       }
       setState(() {
         videoModel = videoModel;

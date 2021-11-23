@@ -7,7 +7,7 @@ class LoginButton extends StatelessWidget {
   final bool enable;
   final VoidCallback onPressed;
 
-  const LoginButton({Key key, this.title, this.enable, this.onPressed}) : super(key: key);
+  const LoginButton({Key? key, required this.title,required  this.enable, required this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(

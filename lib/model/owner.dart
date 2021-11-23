@@ -1,9 +1,9 @@
 class Owner {
-  String name;
-  String face;
-  int fans;
+  late String name;
+  late String face;
+  late int fans;
 
-  Owner({this.name, this.face, this.fans});
+  Owner({required this.name,required  this.face,required  this.fans});
 
   //将map转为mo
   Owner.fromJson(Map<String, dynamic> json) {

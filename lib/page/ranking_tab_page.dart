@@ -8,7 +8,7 @@ import 'package:flutter_bilibili/widget/video_large_card.dart';
 class RankingTabPage extends StatefulWidget {
   final String sort;
 
-  const RankingTabPage({Key key, @required this.sort}) : super(key: key);
+  const RankingTabPage({Key? key, required this.sort}) : super(key: key);
 
   @override
   _RankingTabPageState createState() => _RankingTabPageState();

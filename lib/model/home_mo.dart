@@ -3,11 +3,11 @@ import 'package:flutter_bilibili/model/video_model.dart';
 
 ///解放生产力：在线json转dart https://www.devio.org/io/tools/json-to-dart/
 class HomeMo {
-  List<BannerMo> bannerList;
-  List<CategoryMo> categoryList;
-  List<VideoModel> videoList;
+  late List<BannerMo> bannerList;
+  late List<CategoryMo> categoryList;
+  late List<VideoModel> videoList;
 
-  HomeMo({this.bannerList, this.categoryList, this.videoList});
+  HomeMo({required this.bannerList, required this.categoryList, required this.videoList});
 
   HomeMo.fromJson(Map<String, dynamic> json) {
     if (json['bannerList'] != null) {
@@ -46,24 +46,24 @@ class HomeMo {
 }
 
 class BannerMo {
-  String id;
-  int sticky;
-  String type;
-  String title;
-  String subtitle;
-  String url;
-  String cover;
-  String createTime;
+  late String id;
+  late int sticky;
+  late String type;
+  late String title;
+  late String subtitle;
+  late String url;
+  late String cover;
+  late String createTime;
 
   BannerMo(
-      {this.id,
-        this.sticky,
-        this.type,
-        this.title,
-        this.subtitle,
-        this.url,
-        this.cover,
-        this.createTime});
+      {required this.id,
+       required this.sticky,
+       required this.type,
+       required this.title,
+       required this.subtitle,
+       required this.url,
+       required this.cover,
+       required this.createTime});
 
   BannerMo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -91,10 +91,10 @@ class BannerMo {
 }
 
 class CategoryMo {
-  String name;
-  int count;
+  late String name;
+  late int count;
 
-  CategoryMo({this.name, this.count});
+  CategoryMo({required this.name,required  this.count});
 
   CategoryMo.fromJson(Map<String, dynamic> json) {
     name = json['name'];

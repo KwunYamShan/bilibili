@@ -3,28 +3,28 @@ import 'package:flutter_bilibili/model/home_mo.dart';
 
 class ProfileMo {
 
-  String name;
-  String face;
-  int fans;
-  int favorite;
-  int like;
-  int coin;
-  int browsing;
-  List<BannerMo> bannerList;
-  List<Course> courseList;
-  List<Benefit> benefitList;
+  late String name;
+  late String face;
+  late int fans;
+  late int favorite;
+  late int like;
+  late int coin;
+  late int browsing;
+  late List<BannerMo> bannerList;
+  late List<Course> courseList;
+  late List<Benefit> benefitList;
 
   ProfileMo({
-      this.name, 
-      this.face, 
-      this.fans, 
-      this.favorite, 
-      this.like, 
-      this.coin, 
-      this.browsing, 
-      this.bannerList, 
-      this.courseList, 
-      this.benefitList});
+      required this.name,
+      required this.face,
+      required this.fans,
+      required this.favorite,
+      required this.like,
+      required this.coin,
+      required this.browsing,
+      required this.bannerList,
+      required this.courseList,
+      required this.benefitList});
 
   ProfileMo.fromJson(dynamic json) {
     name = json["name"];
@@ -81,12 +81,12 @@ class ProfileMo {
 /// url : "660782755"
 
 class Benefit {
-  String name;
-  String url;
+  late String name;
+  late String url;
 
   Benefit({
-      this.name, 
-      this.url});
+      required this.name,
+      required this.url});
 
   Benefit.fromJson(dynamic json) {
     name = json["name"];
@@ -108,16 +108,16 @@ class Benefit {
 /// group : 1
 
 class Course {
-  String name;
-  String cover;
-  String url;
-  int group;
+  late String name;
+  late String cover;
+  late String url;
+  late int group;
 
   Course({
-      this.name, 
-      this.cover, 
-      this.url, 
-      this.group});
+      required this.name,
+      required this.cover,
+      required this.url,
+      required this.group});
 
   Course.fromJson(dynamic json) {
     name = json["name"];

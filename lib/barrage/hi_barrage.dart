@@ -22,9 +22,9 @@ class HiBarrage extends StatefulWidget {
   final bool autoPlay;
 
   const HiBarrage(
-      {Key key,
+      {required Key key,
       this.lineCount = 4,
-      @required this.vid,
+      required this.vid,
       this.speed = 800,
       this.top = 0,
       this.autoPlay = false})
@@ -35,15 +35,15 @@ class HiBarrage extends StatefulWidget {
 }
 
  class HiBarrageState extends State<HiBarrage> with IBarrage {
-  HiSocket _hiSocket;
-  double _width;
-  double _height;
+  late HiSocket _hiSocket;
+  late double _width;
+  late double _height;
   List<BarrageItem> _barrageItemList = []; //弹幕widget集合
   List<BarrageModel> _barrageModelList = []; //弹幕类型
   int _barrageIndex = 0; //第几条弹幕
   Random _random = Random();
-  BarrageStatus _barrageStatus;
-  Timer _timer;
+  BarrageStatus? _barrageStatus;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class HiBarrage extends StatefulWidget {
       _hiSocket.close();
     }
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
     super.dispose();
   }
@@ -124,14 +124,14 @@ class HiBarrage extends StatefulWidget {
       //刷新屏幕
     });
     print("HiBarrage : pause: ");
-    _timer.cancel();
+    _timer?.cancel();
   }
 
   @override
   void play() {
     _barrageStatus = BarrageStatus.PLAY;
     print("HiBarrage :play: ");
-    if (_timer != null && _timer.isActive) return;
+    if (_timer != null && _timer!.isActive) return;
     _timer = Timer.periodic(Duration(milliseconds: widget.speed), (timer) {
       if (_barrageModelList.isNotEmpty) {
         //将发送的弹幕从集合中剔除

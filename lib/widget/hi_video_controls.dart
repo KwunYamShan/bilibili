@@ -8,14 +8,15 @@ import 'dart:async';
 
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/chewie_progress_colors.dart';
-import 'package:chewie/src/material_progress_bar.dart';
-import 'package:chewie/src/utils.dart';
+import 'package:chewie/src/helpers/utils.dart';
+import 'package:chewie/src/material/material_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+
 class HiVideoControls extends StatefulWidget {
   const HiVideoControls(
-      {Key key,
+      {Key? key,
       this.showLoadingOnInitialize = true,
       this.showBigPlayIcon = true,
       this.overlayUI,
@@ -30,13 +31,13 @@ class HiVideoControls extends StatefulWidget {
   final bool showBigPlayIcon;
 
   //视频浮层
-  final Widget overlayUI;
+  final Widget? overlayUI;
 
   //底部渐变
-  final Gradient bottomGradient;
+  final Gradient? bottomGradient;
 
   //弹幕浮层
-  final Widget barrageUI;
+  final Widget? barrageUI;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,37 +47,37 @@ class HiVideoControls extends StatefulWidget {
 
 class _HiVideoControlsState extends State<HiVideoControls>
     with SingleTickerProviderStateMixin {
-  VideoPlayerValue _latestValue;
-  double _latestVolume;
+ late  VideoPlayerValue _latestValue;
+  late double _latestVolume;
   bool _hideStuff = true;
-  Timer _hideTimer;
-  Timer _initTimer;
-  Timer _showAfterExpandCollapseTimer;
+  Timer? _hideTimer;
+  Timer ?_initTimer;
+  Timer? _showAfterExpandCollapseTimer;
   bool _dragging = false;
   bool _displayTapped = false;
 
   final barHeight = 48.0;
   final marginSize = 5.0;
 
-  VideoPlayerController controller;
-  ChewieController chewieController;
-  AnimationController playPauseIconAnimationController;
+  late VideoPlayerController controller;
+ ChewieController? _chewieController;
+ ChewieController get chewieController => _chewieController!;
+ late  AnimationController playPauseIconAnimationController;
 
   @override
   Widget build(BuildContext context) {
     if (_latestValue.hasError) {
-      return chewieController.errorBuilder != null
-          ? chewieController.errorBuilder(
+      return chewieController.errorBuilder?.call(
         context,
-        chewieController.videoPlayerController.value.errorDescription,
-      )
-          : const Center(
-        child: Icon(
-          Icons.error,
-          color: Colors.white,
-          size: 42,
-        ),
-      );
+        chewieController.videoPlayerController.value.errorDescription!,
+      ) ??
+          const Center(
+            child: Icon(
+              Icons.error,
+              color: Colors.white,
+              size: 42,
+            ),
+          );
     }
 
     return MouseRegion(
@@ -129,21 +130,14 @@ class _HiVideoControlsState extends State<HiVideoControls>
 
   @override
   void didChangeDependencies() {
-    final _oldController = chewieController;
-    chewieController = ChewieController.of(context);
+    final _oldController = _chewieController;
+    _chewieController = ChewieController.of(context);
     controller = chewieController.videoPlayerController;
-
-    playPauseIconAnimationController ??= AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-      reverseDuration: const Duration(milliseconds: 400),
-    );
 
     if (_oldController != chewieController) {
       _dispose();
       _initialize();
     }
-
     super.didChangeDependencies();
   }
 
@@ -151,7 +145,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
   AnimatedOpacity _buildBottomBar(
       BuildContext context,
       ) {
-    final iconColor = Theme.of(context).textTheme.button.color;
+    final iconColor = Theme.of(context).textTheme.button?.color;
 
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
@@ -324,7 +318,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
         _cancelAndRestartTimer();
 
         if (_latestValue.volume == 0) {
-          controller.setVolume(_latestVolume ?? 0.5);
+          controller.setVolume(_latestVolume );
         } else {
           _latestVolume = controller.value.volume;
           controller.setVolume(0.0);
@@ -373,19 +367,15 @@ class _HiVideoControlsState extends State<HiVideoControls>
   }
 
   ///播放时间
-  Widget _buildPosition(Color iconColor) {
-    final position = _latestValue != null && _latestValue.position != null
-        ? _latestValue.position
-        : Duration.zero;
-    final duration = _latestValue != null && _latestValue.duration != null
-        ? _latestValue.duration
-        : Duration.zero;
+  Widget _buildPosition(Color? iconColor) {
+    final position = _latestValue.position;
+    final duration = _latestValue.duration;
 
-    return Padding(
-      padding: EdgeInsets.only(right: 5.0),
-      child: Text(
-        '${formatDuration(position)}/${formatDuration(duration)}',
-        style: TextStyle(fontSize: 10, color: Colors.white),
+    return Text(
+      '${formatDuration(position)} / ${formatDuration(duration)}',
+      style: const TextStyle(
+        fontSize: 14.0,
+        color: Colors.white,
       ),
     );
   }
@@ -454,7 +444,7 @@ class _HiVideoControlsState extends State<HiVideoControls>
       } else {
         _cancelAndRestartTimer();
 
-        if (!controller.value.initialized) {
+        if (!controller.value.isInitialized) {
           controller.initialize().then((_) {
             controller.play();
             playPauseIconAnimationController.forward();
@@ -534,9 +524,9 @@ class _HiVideoControlsState extends State<HiVideoControls>
 
 class _PlaybackSpeedDialog extends StatelessWidget {
   const _PlaybackSpeedDialog({
-    Key key,
-    @required List<double> speeds,
-    @required double selected,
+    Key ?key,
+    required List<double> speeds,
+    required double selected,
   })  : _speeds = speeds,
         _selected = selected,
         super(key: key);

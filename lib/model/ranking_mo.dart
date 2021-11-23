@@ -6,12 +6,12 @@ import 'package:flutter_bilibili/model/video_model.dart';
 
 class RankingMo {
 
-  int total;
-  List<VideoModel> list;
+  late int total;
+  late List<VideoModel> list;
 
   RankingMo({
-      this.total, 
-      this.list});
+      required this.total,
+      required this.list});
 
   RankingMo.fromJson(dynamic json) {
     total = json["total"];

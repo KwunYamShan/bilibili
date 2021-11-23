@@ -17,7 +17,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin{
-  ProfileMo _profileMo;
+  ProfileMo? _profileMo;
 
   ScrollController _controller = ScrollController();
   @override
@@ -67,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
 
   _buildHead() {
     if(_profileMo == null) return Container();
-    return HiFlexibleHeader(name: _profileMo.name, face: _profileMo.face, controller: _controller);
+    return HiFlexibleHeader(name: _profileMo!.name, face: _profileMo!.face, controller: _controller);
   }
 
   @override
@@ -103,15 +103,15 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
       return [];
     }else{
       return [_buildBanner(),
-        CourseCard(courseList:_profileMo.courseList),
-        BenefitCard(benefitList: _profileMo.benefitList),
+        CourseCard(courseList:_profileMo!.courseList),
+        BenefitCard(benefitList: _profileMo!.benefitList),
       ];
     }
   }
 
   //用户资产tab下面的banner
    _buildBanner() {
-    return HiBanner(_profileMo.bannerList,bannerHeight: 120,padding: EdgeInsets.only(left: 10,right: 10),);
+    return HiBanner(_profileMo!.bannerList,bannerHeight: 120,padding: EdgeInsets.only(left: 10,right: 10),);
   }
 
   //头像下面 用户资产tab
@@ -125,11 +125,11 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildIconText('收藏',_profileMo.favorite),
-          _buildIconText('点赞',_profileMo.like),
-          _buildIconText('浏览',_profileMo.browsing),
-          _buildIconText('金币',_profileMo.coin),
-          _buildIconText('粉丝',_profileMo.fans),
+          _buildIconText('收藏',_profileMo!.favorite),
+          _buildIconText('点赞',_profileMo!.like),
+          _buildIconText('浏览',_profileMo!.browsing),
+          _buildIconText('金币',_profileMo!.coin),
+          _buildIconText('粉丝',_profileMo!.fans),
         ],
       ),
     );

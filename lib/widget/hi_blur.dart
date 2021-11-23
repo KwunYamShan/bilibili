@@ -4,11 +4,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 //高斯模糊
 class HiBlur extends StatelessWidget{
-  final Widget child;
+  final Widget? child;
   //模糊值
   final double sigma;
 
-  const HiBlur({Key key, this.sigma = 10, this.child}) : super(key: key);
+  const HiBlur({Key? key, this.sigma = 10, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -53,23 +53,27 @@ class RouteStatusInfo {
 ///监听路由页面跳转
 ///感知当前页面是否压后台
 class HiNavigator extends _RouteJumpListener {
-  static HiNavigator _instance;
+  static HiNavigator? _instance;
 
   List<RouteChangeListener> _listeners = [];
 
   HiNavigator._();
 
-  RouteJumpListener _routeJump;
+  RouteJumpListener? _routeJump;
 
-  RouteStatusInfo _current;
+  RouteStatusInfo? _current;
   //首页底部tab
-  RouteStatusInfo _bottomTab;
+  RouteStatusInfo? _bottomTab;
 
   static HiNavigator getInstance() {
     if (_instance == null) {
       _instance = HiNavigator._();
     }
-    return _instance;
+    return _instance!;
+  }
+
+  RouteStatusInfo? getCurrent() {
+    return _current;
   }
 
   ///注册路由跳转逻辑
@@ -78,8 +82,8 @@ class HiNavigator extends _RouteJumpListener {
   }
 
   @override
-  void onJumpTo(RouteStatus routeStatus, {Map args}) {
-    _routeJump.onJumpTo(routeStatus, args: args);
+  void onJumpTo(RouteStatus routeStatus, {Map? args}) {
+    _routeJump?.onJumpTo(routeStatus, args: args);
   }
 
   ///监听路由页面跳转
@@ -92,7 +96,7 @@ class HiNavigator extends _RouteJumpListener {
   //监听首页底部 tab切换
   void onBottomTabChange(int index, Widget page){
     _bottomTab = RouteStatusInfo(RouteStatus.home, page);
-    _notify(_bottomTab);
+    _notify(_bottomTab!);
 
   }
   //移除监听
@@ -109,12 +113,12 @@ class HiNavigator extends _RouteJumpListener {
   void _notify(RouteStatusInfo current) {
     if(current.page is BottomNavigator && _bottomTab!=null){
       //如果打开的是首页，则明确到首页具体的tab
-      current = _bottomTab;
+      current = _bottomTab!;
     }
     print("hi _notify: current：${current.page}");
     print("hi _notify:pre: ${_current?.page}");
     _listeners.forEach((element) {
-      element(current,_current);
+      element(current,_current!);
     });
     _current = current;
   }
@@ -126,11 +130,11 @@ abstract class _RouteJumpListener {
 }
 
 ///定义一个类型
-typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map args});
+typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map? args});
 
 ///定义路由跳转逻辑要实现的功能
 class RouteJumpListener {
   final OnJumpTo onJumpTo;
 
-  RouteJumpListener({this.onJumpTo});
+  RouteJumpListener({required this.onJumpTo});
 }

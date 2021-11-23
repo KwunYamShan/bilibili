@@ -4,18 +4,18 @@ import 'package:flutter_bilibili/util/color_util.dart';
 class LoginInput extends StatefulWidget {
   final String title;
   final String hint;
-  final ValueChanged<String> onChanged; //文字改变监听
-  final ValueChanged<bool> focusChanged; //获取焦点监听
+  final ValueChanged<String>? onChanged; //文字改变监听
+  final ValueChanged<bool> ?focusChanged; //获取焦点监听
   final bool lineStretch; //分割线
   final bool obscureText; //密码保护
-  final TextInputType keboardType; //控制输入类型
+  final TextInputType? keboardType; //控制输入类型
   @override
   _LoginInputState createState() => _LoginInputState();
 
   LoginInput(
-      {Key key,
-      this.title,
-      this.hint,
+      {Key? key,
+      required this.title,
+      required this.hint,
       this.onChanged,
       this.focusChanged,
       this.lineStretch = false,
@@ -33,7 +33,7 @@ class _LoginInputState extends State<LoginInput> {
     _focusNode.addListener(() {
       print("Has focus ${_focusNode.hasFocus}");
       if (widget.focusChanged != null) {
-        widget.focusChanged(_focusNode.hasFocus);
+        widget.focusChanged!(_focusNode.hasFocus);
       }
     });
   }
@@ -90,7 +90,7 @@ class _LoginInputState extends State<LoginInput> {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: 20, right: 20),
         border: InputBorder.none,
-        hintText: widget.hint ?? '',
+        hintText: widget.hint ,
         hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
       ),
       cursorColor: primary,

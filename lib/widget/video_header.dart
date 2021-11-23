@@ -7,7 +7,7 @@ import 'package:flutter_bilibili/util/format_util.dart';
 class VideoHeader extends StatelessWidget {
   final Owner owner;
 
-  const VideoHeader({Key key, @required this.owner}) : super(key: key);
+  const VideoHeader({Key? key, required this.owner}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

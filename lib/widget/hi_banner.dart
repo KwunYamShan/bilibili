@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bilibili/model/home_mo.dart';
 import 'package:flutter_bilibili/model/video_model.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class HiBanner extends StatelessWidget {
   final List<BannerMo> bannerList;
@@ -11,7 +11,7 @@ class HiBanner extends StatelessWidget {
   final EdgeInsetsGeometry padding; //
 
   const HiBanner(this.bannerList,
-      {Key key, this.bannerHeight = 160, this.padding})
+      {Key? key, this.bannerHeight = 160, required this.padding})
       : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class HiBanner extends StatelessWidget {
   }
 
   _banner() {
-    var right = 10 + (padding?.horizontal ?? 0) / 2;
+    var right = 10 + (padding.horizontal ) / 2;
     return Swiper(
       itemCount: bannerList.length,
       autoplay: true,

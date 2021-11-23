@@ -13,10 +13,10 @@ class HiNetReponse<T> {
     this.statusMessage,
     this.extra});
 
-  T data;
-  BaseRequest request;
-  int statusCode;
-  String statusMessage;
+  T? data;
+  BaseRequest? request;
+  int? statusCode;
+  String? statusMessage;
   dynamic extra;
 
   @override

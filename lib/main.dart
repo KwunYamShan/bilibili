@@ -62,10 +62,10 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     //实现路由跳转逻辑
     HiNavigator.getInstance().registerRouteJump(
-        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map args}) {
+        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
           _routeStatus = routeStatus;
           if(_routeStatus == RouteStatus.detail){
-            this.videoModel = args['videoMo'];
+            this.videoModel = args!['videoMo'];
           }
           notifyListeners();
         }));
@@ -75,7 +75,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
 
   ///定义集合存放页面
   List<MaterialPage> pages = [];
-  VideoModel videoModel;
+  VideoModel? videoModel;
 
   // BiliRoutePath path;
 
@@ -97,7 +97,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     } else if (routeStatus == RouteStatus.detail) {
       if (videoModel != null)
         page = pageWrap(VideoDetailPage(
-          videoModel: videoModel,
+          videoModel: videoModel!,
         ));
     } else if (routeStatus == RouteStatus.registration) {
       page = pageWrap(RegistrationPage(
@@ -116,7 +116,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
 
     return WillPopScope(
       //fix android 物理返回键，无法返回上一页的问题 https://github.com/flutter/flutter/issues/66349
-      onWillPop: () async => !await navigatorKey.currentState.maybePop(),
+      onWillPop: () async => !(await navigatorKey.currentState?.maybePop()??false),
       child: Navigator(
         key: navigatorKey,
         pages: pages,

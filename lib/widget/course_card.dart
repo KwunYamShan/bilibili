@@ -7,7 +7,7 @@ import 'package:flutter_bilibili/util/view_util.dart';
 class CourseCard extends StatelessWidget {
   final List<Course> courseList;
 
-  const CourseCard({Key key, @required this.courseList}) : super(key: key);
+  const CourseCard({Key? key, required this.courseList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

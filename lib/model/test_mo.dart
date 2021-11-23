@@ -2,44 +2,44 @@
 //网页版json转darthttps://www.devio.org/io/tools/json-to-dart/
 //可以改类名 不能改字段名
 class TestMo {
-  String id;
-  String vid;
-  String title;
-  String tname;
-  String url;
-  String cover;
-  int pubdate;
-  String desc;
-  int view;
-  int duration;
-  Owner owner;
-  int reply;
-  int favorite;
-  int like;
-  int coin;
-  int share;
-  String createTime;
-  int size;
+  late String id;
+  late String vid;
+  late String title;
+  late String tname;
+  late String url;
+  late String cover;
+  late int pubdate;
+  late String desc;
+  late int view;
+  late int duration;
+  late Owner owner;
+  late int reply;
+  late int favorite;
+  late int like;
+  late int coin;
+  late int share;
+  late String createTime;
+  late int size;
 
   TestMo(
-      {this.id,
-        this.vid,
-        this.title,
-        this.tname,
-        this.url,
-        this.cover,
-        this.pubdate,
-        this.desc,
-        this.view,
-        this.duration,
-        this.owner,
-        this.reply,
-        this.favorite,
-        this.like,
-        this.coin,
-        this.share,
-        this.createTime,
-        this.size});
+      {required this.id,
+       required  this.vid,
+       required  this.title,
+       required  this.tname,
+       required  this.url,
+       required  this.cover,
+       required  this.pubdate,
+       required  this.desc,
+       required  this.view,
+       required  this.duration,
+       required  this.owner,
+       required  this.reply,
+       required  this.favorite,
+       required  this.like,
+       required  this.coin,
+       required  this.share,
+       required  this.createTime,
+       required  this.size});
 
   TestMo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -52,7 +52,7 @@ class TestMo {
     desc = json['desc'];
     view = json['view'];
     duration = json['duration'];
-    owner = json['owner'] != null ? new Owner.fromJson(json['owner']) : null;
+    owner = new Owner.fromJson(json['owner']);
     reply = json['reply'];
     favorite = json['favorite'];
     like = json['like'];
@@ -89,11 +89,11 @@ class TestMo {
 }
 
 class Owner {
-  String name;
-  String face;
-  int fans;
+ late String name;
+ late String face;
+ late int fans;
 
-  Owner({this.name, this.face, this.fans});
+  Owner({required this.name, required this.face, required this.fans});
 
   Owner.fromJson(Map<String, dynamic> json) {
     name = json['name'];

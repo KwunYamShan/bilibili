@@ -36,14 +36,14 @@ class DioAdapter extends HiNetAdapter{
   }
 
   //构建HiNetResponse
-  HiNetReponse buildRes(Response response, BaseRequest request) {
-    return HiNetReponse(
-      data: response.data,
-      request: request,
-      statusCode: response.statusCode,
-      statusMessage: response.statusMessage,
-      extra: response
-    );
+  Future<HiNetReponse<T>>  buildRes<T>(Response response, BaseRequest request) {
+    return Future.value(HiNetReponse(
+        data: response.data,
+        request: request,
+        statusCode: response.statusCode??0,
+        statusMessage: response.statusMessage ??"error what fuck",
+        extra: response
+    ));
   }
 
   ///设置代理

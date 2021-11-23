@@ -17,9 +17,9 @@ import 'package:flutter_bilibili/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
-  final ValueChanged<int> onJumpTo;
+  final ValueChanged<int>? onJumpTo;
 
-  const HomePage({Key key, this.onJumpTo}) : super(key: key);
+  const HomePage({Key? key, this.onJumpTo}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,19 +31,19 @@ class _HomePageState extends HiState<HomePage>
         AutomaticKeepAliveClientMixin,
         TickerProviderStateMixin,
         WidgetsBindingObserver {
-  RouteChangeListener listener;
+  var listener;
 
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
 
   bool _isloading = true; //因为第一次肯定是要加载数据的
 
-  Widget _currentPage;
+  Widget? _currentPage;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     _controller = TabController(length: categoryList.length, vsync: this);
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
       print("current:${current.page}  ,pre:${pre.page}");
@@ -65,7 +65,7 @@ class _HomePageState extends HiState<HomePage>
   void dispose() {
     HiNavigator.getInstance().removeListener((current, pre) => listener);
     _controller.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
@@ -129,7 +129,7 @@ class _HomePageState extends HiState<HomePage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-  TabController _controller;
+  late TabController _controller;
 
   _tabbar() {
     return HiTab(categoryList.map<Tab>((tab) {
@@ -188,7 +188,7 @@ class _HomePageState extends HiState<HomePage>
           InkWell(
             onTap: () {
               if (widget.onJumpTo != null) {
-                widget.onJumpTo(3);
+                widget.onJumpTo!(3);
               }
             },
             child: ClipRRect(

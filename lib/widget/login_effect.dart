@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class LoginEffect extends StatefulWidget {
   final bool protect; //是否是保护类型
 
-  LoginEffect({Key key, @required this.protect}) : super(key: key);
+  LoginEffect({Key? key, required this.protect}) : super(key: key);
 
   @override
   _LoginEffectState createState() => _LoginEffectState();

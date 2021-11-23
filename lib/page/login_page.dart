@@ -11,7 +11,7 @@ import 'package:flutter_bilibili/widget/login_input.dart';
 
 class LoginPage extends StatefulWidget {
 
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -20,9 +20,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool protect = false;
   bool loginEnable = false;
-  String userName;
-  String password;
-  String rePassword;
+  late String userName;
+ late  String password;
+  String? rePassword;
 
   @override
   Widget build(BuildContext context) {

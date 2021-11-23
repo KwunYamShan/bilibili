@@ -8,7 +8,7 @@ import 'package:flutter_bilibili/util/view_util.dart';
 class VideoLargeCard extends StatelessWidget {
   final VideoModel videoModel;
 
-  const VideoLargeCard({Key key, @required this.videoModel}) : super(key: key);
+  const VideoLargeCard({Key? key, required this.videoModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -11,9 +11,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomeTabPage extends StatefulWidget {
   final String categoryName;
-  final List<BannerMo> bannerList;
+  final List<BannerMo>? bannerList;
 
-  const HomeTabPage({Key key, this.categoryName, this.bannerList})
+  const HomeTabPage({Key? key,required this.categoryName, this.bannerList})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class _HomeTabPageState
   }
 
   _banner() {
-    return HiBanner(widget.bannerList,padding: EdgeInsets.only(left: 5,right: 5),);
+    return HiBanner(widget.bannerList!,padding: EdgeInsets.only(left: 5,right: 5),);
   }
 
   @override

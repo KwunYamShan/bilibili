@@ -8,17 +8,17 @@ class HiNet {
   //懒汉式单例
   HiNet._();
 
-  static HiNet _instance;
+  static HiNet? _instance;
 
   static HiNet getInstance() {
     if (_instance == null) {
       _instance = HiNet._();
     }
-    return _instance;
+    return _instance!;
   }
 
   Future fire(BaseRequest request) async {
-    HiNetReponse response;
+    HiNetReponse? response;
     var error;
     try {
       response = await send(request);
@@ -35,9 +35,9 @@ class HiNet {
       printLog(error);
     }
 
-    var result = response.data;
+    var result = response?.data;
     printLog(result);
-    var status = response.statusCode;
+    var status = response?.statusCode;
     switch (status) {
       case 200:
         return result;
@@ -46,9 +46,8 @@ class HiNet {
       case 403:
         throw NeedAuth(result.toString(), data: result);
       default:
-        throw HiNetError(status, result.toString(), data: result);
+        throw HiNetError(status ??-1, result.toString(), data: result);
     }
-    return result;
   }
 
   Future<dynamic> send<T>(BaseRequest request) async {

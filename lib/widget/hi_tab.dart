@@ -5,14 +5,14 @@ import 'package:underline_indicator/underline_indicator.dart';
 //顶部tab切换组件
 class HiTab extends StatefulWidget {
   final List<Widget> tabs;
-  final TabController controller;
+  final TabController? controller;
   final double fontSize;
   final double borderWidth;
   final double insets;
   final Color unselectedLabelColor;
 
   const HiTab(this.tabs,
-      {Key key,
+      {Key? key,
       this.controller,
       this.fontSize = 13,
       this.borderWidth = 2,

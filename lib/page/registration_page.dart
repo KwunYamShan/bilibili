@@ -11,7 +11,7 @@ import 'package:flutter_bilibili/widget/login_input.dart';
 
 class RegistrationPage extends StatefulWidget {
 
-  RegistrationPage({Key key}) : super(key: key);
+  RegistrationPage({Key? key}) : super(key: key);
 
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -20,9 +20,9 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   bool protect = false;
   bool loginEnable = false;
-  String userName;
-  String password;
-  String rePassword;
+  late String userName;
+  late String password;
+  late String rePassword;
   String imoocId = '7240673';
   String orderId = '2251';
 
@@ -158,7 +158,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
   void checkParams(){
-    String tips;
+    String? tips ;
     if(password !=rePassword){
       tips = '两次密码不一致';
     }else if(orderId.length !=4){

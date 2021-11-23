@@ -16,12 +16,12 @@ class VideoView extends StatefulWidget {
   final bool autoPlay;
   final bool looping;
   final double aspectRatio;
-  final Widget overlayUI;
-  final Widget barrageUI;
+  final Widget? overlayUI;
+  final Widget? barrageUI;
 
   const VideoView(this.url,
-      {Key key,
-      this.cover,
+      {Key? key,
+      required this.cover,
       this.autoPlay = false,
       this.looping = false,
       this.aspectRatio = 16 / 9,
@@ -34,8 +34,8 @@ class VideoView extends StatefulWidget {
 }
 
 class _VideoViewState extends State<VideoView> {
-  VideoPlayerController _videoPlayerController; //video_player 播放器 controller
-  ChewieController _chewieController; //chewie 播放器controller
+  late VideoPlayerController _videoPlayerController; //video_player 播放器 controller
+  late ChewieController _chewieController; //chewie 播放器controller
   get _placeholder => FractionallySizedBox(
         //封面
         widthFactor: 1,
@@ -47,7 +47,7 @@ class _VideoViewState extends State<VideoView> {
         playedColor: primary, //播放状态下的颜色
         handleColor: primary, //拖动状态下的颜色
         backgroundColor: Colors.grey, //背景色
-        bufferedColor: primary[50], //缓冲状态的颜色
+        bufferedColor: primary[50]!, //缓冲状态的颜色
       );
 
   @override

@@ -4,14 +4,13 @@ import 'package:flutter_bilibili/model/profile_mo.dart';
 import 'package:flutter_bilibili/navigator/hi_navigator.dart';
 import 'package:flutter_bilibili/util/view_util.dart';
 import 'package:flutter_bilibili/widget/hi_blur.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:clipboard/clipboard.dart';
 class BenefitCard extends StatelessWidget {
   final List<Benefit> benefitList;
 
-  const BenefitCard({Key key, @required this.benefitList}) : super(key: key);
+  const BenefitCard({Key? key, required this.benefitList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

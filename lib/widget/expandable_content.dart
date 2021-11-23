@@ -6,7 +6,7 @@ import 'package:flutter_bilibili/util/view_util.dart';
 class ExpandableContent extends StatefulWidget {
   final VideoModel mo;
 
-  const ExpandableContent({Key key, @required this.mo}) : super(key: key);
+  const ExpandableContent({Key? key, required this.mo}) : super(key: key);
 
   @override
   _ExpandableContentState createState() => _ExpandableContentState();
@@ -20,10 +20,10 @@ class _ExpandableContentState extends State<ExpandableContent>
   bool _expand = false;
 
   //用来管理Animation
-  AnimationController _controller;
+ late AnimationController _controller;
 
   //生成动画高度的值
-  Animation<double> _heightFactor;
+  late  Animation<double> _heightFactor;
 
   @override
   void initState() {
@@ -119,7 +119,7 @@ class _ExpandableContentState extends State<ExpandableContent>
     return AnimatedBuilder(
       animation: _controller.view,
       child: child,
-      builder: (BuildContext context, Widget child){
+      builder: (BuildContext context, Widget? child){
         return Align(
           heightFactor: _heightFactor.value,
           //fix 从布局之上的位置开始展开

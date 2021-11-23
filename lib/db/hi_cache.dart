@@ -2,13 +2,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HiCache {
-  SharedPreferences prefs;
+  SharedPreferences? prefs;
 
   HiCache._() {
     init();
   }
 
-  static HiCache _instance;
+  static HiCache? _instance;
 
   //预初始化，防止使用get时，prefs还未完成初始化,在页面init前调用一次
   static Future<HiCache> preInit() async {
@@ -16,14 +16,14 @@ class HiCache {
       var prefs = await SharedPreferences.getInstance();
       _instance = HiCache._pre(prefs);
     }
-    return _instance;
+    return _instance!;
   }
 
   static HiCache getInstance() {
     if (_instance == null) {
       _instance = HiCache._();
     }
-    return _instance;
+    return _instance!;
   }
 
   void init() async {
@@ -38,26 +38,29 @@ class HiCache {
   }
 
   setString(String key, String value){
-    prefs.setString(key, value);
+    prefs?.setString(key, value);
   }
 
   setBool(String key, bool value){
-    prefs.setBool(key, value);
+    prefs?.setBool(key, value);
   }
 
   setInt(String key, int value){
-    prefs.setInt(key, value);
+    prefs?.setInt(key, value);
   }
 
   setDouble(String key, double value){
-    prefs.setDouble(key, value);
+    prefs?.setDouble(key, value);
   }
 
   setStringList(String key, List<String> value){
-    prefs.setStringList(key, value);
+    prefs?.setStringList(key, value);
   }
-
-  T get<T> (String key){
-    return prefs.get(key);
+  T? get<T>(String key) {
+    var result = prefs?.get(key);
+    if (result != null) {
+      return result as T;
+    }
+    return null;
   }
 }

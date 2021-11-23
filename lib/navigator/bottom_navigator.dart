@@ -17,7 +17,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   int _currentIndex = 0;
   static int _initialPage  =   0;
   final PageController _controller = PageController(initialPage: 0);
-  List<Widget> _pages;
+  late List<Widget> _pages;
   bool _hasBuild = false;
   @override
   Widget build(BuildContext context) {

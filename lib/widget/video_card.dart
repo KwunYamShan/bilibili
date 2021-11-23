@@ -8,7 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 class VideoCard extends StatelessWidget {
   final VideoModel videoMo;
 
-  const VideoCard({Key key, this.videoMo}) : super(key: key);
+  const VideoCard({Key? key,required this.videoMo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class VideoCard extends StatelessWidget {
     );
   }
 
-  _iconText(IconData iconData, int count) {
+  _iconText(IconData? iconData, int count) {
     String views = "";
     if (iconData != null) {
       views = countFormat(count);

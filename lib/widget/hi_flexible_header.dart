@@ -9,7 +9,7 @@ class HiFlexibleHeader extends StatefulWidget {
   final String face;
   final ScrollController controller;
 
-  const HiFlexibleHeader({Key key,@required this.name, @required this.face,@required this.controller}) : super(key: key);
+  const HiFlexibleHeader({Key? key,required this.name, required this.face,required this.controller}) : super(key: key);
   @override
   _HiFlexibleHeaderState createState() => _HiFlexibleHeaderState();
 }

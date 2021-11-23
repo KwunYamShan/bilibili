@@ -16,13 +16,13 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends HiBaseTabState<FavoriteMo,VideoModel,FavoritePage> {
 
-  RouteChangeListener listener;
+  late RouteChangeListener listener;
   @override
   void initState() {
     super.initState();
     //从详情页返回刷新页面
     HiNavigator.getInstance().addListener(listener = (current, pre) => {
-      if(pre?.page is VideoDetailPage && current.page is FavoritePage){
+      if(pre.page is VideoDetailPage && current.page is FavoritePage){
         loadData()
       }
     });

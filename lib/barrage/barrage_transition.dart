@@ -6,14 +6,14 @@ class BarrageTransition extends StatefulWidget {
   final Duration duration;
   final ValueChanged onComplete;//播放完成的回调
 
-  const BarrageTransition({Key key,@required this.duration,@required this.onComplete, @required this.child}) : super(key: key);
+  const BarrageTransition({required Key key,required this.duration,required this.onComplete, required this.child}) : super(key: key);
   @override
   BarrageTransitionState createState() => BarrageTransitionState();
 }
 
 class BarrageTransitionState extends State<BarrageTransition> with SingleTickerProviderStateMixin{
-  AnimationController _animationController;
-  Animation<Offset> _animation;
+  late AnimationController _animationController;
+  late Animation<Offset> _animation;
 
   @override
   void initState() {
