@@ -14,7 +14,7 @@ class VideoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("VideoCard" + videoMo.url);
+        print("VideoCard" + videoMo.toString());
         HiNavigator.getInstance().onJumpTo(RouteStatus.detail,args: {"videoMo":videoMo});
       },
       child: SizedBox(

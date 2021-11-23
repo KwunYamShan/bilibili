@@ -91,7 +91,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   _buildVideoView() {
     var model = videoModel;
     return VideoView(
-      model!.url,
+      model!.url!,
       cover: model.cover,
       overlayUI: videoAppbar(),
       barrageUI: HiBarrage(

@@ -5,7 +5,7 @@ class VideoModel {
   late String vid;
   late String title;
   late String tname;
-  late String url;
+  String? url;
   late String cover;
   late int pubdate;
   late String desc;
